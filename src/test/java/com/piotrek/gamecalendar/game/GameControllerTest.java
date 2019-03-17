@@ -1,5 +1,6 @@
 package com.piotrek.gamecalendar.game;
 
+import com.piotrek.gamecalendar.AbstractIntegrationTest;
 import com.piotrek.gamecalendar.exceptions.ErrorResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,10 +19,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Testcontainers
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class GameControllerTest {
+//@Testcontainers
+//@ExtendWith(SpringExtension.class)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class GameControllerTest extends AbstractIntegrationTest {
 
     @Autowired
     private GameRepository gameRepository;
@@ -29,12 +30,12 @@ class GameControllerTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-    @Container
-    private static final GenericContainer MARIA_DB_CONTAINER = new MariaDBContainer()
-            .withDatabaseName("testDB")
-            .withUsername("userTest")
-            .withPassword("strongPassword")
-            .withExposedPorts(3306);
+//    @Container
+//    private static final GenericContainer MARIA_DB_CONTAINER = new MariaDBContainer()
+//            .withDatabaseName("testDB")
+//            .withUsername("userTest")
+//            .withPassword("strongPassword")
+//            .withExposedPorts(3306);
 
     @BeforeEach
     void beforeEach() {
@@ -45,10 +46,10 @@ class GameControllerTest {
     @Test
     void shouldReturnGameByGivenId() {
 
-        System.out.println("###############################");
-        System.out.println("is Maria created: " + MARIA_DB_CONTAINER.isCreated());
-        System.out.println("is Maria running: " + MARIA_DB_CONTAINER.isRunning());
-        System.out.println("###############################");
+//        System.out.println("###############################");
+//        System.out.println("is Maria created: " + MARIA_DB_CONTAINER.isCreated());
+//        System.out.println("is Maria running: " + MARIA_DB_CONTAINER.isRunning());
+//        System.out.println("###############################");
 
         // given
         var expectedGame = Game.builder()
