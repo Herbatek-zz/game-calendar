@@ -18,24 +18,33 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ContextConfiguration(initializers = AbstractIntegrationTest.Initializer.class)
 public class AbstractIntegrationTest {
 
+    private final static String DB_PREFIX = "jdbc:mariadb://";
+    private final static String DB_NAME = "testDB";
+    private final static String DB_USERNAME = "userTest";
+    private final static String DB_PASSWORD = "strongPassword";
+    private final static int DB_PORT = 3306;
+
     @Container
     private static final GenericContainer MARIA_DB_CONTAINER = new MariaDBContainer()
-            .withDatabaseName("testDB")
-            .withUsername("userTest")
-            .withPassword("strongPassword")
-            .withExposedPorts(3306);
+            .withDatabaseName(DB_NAME)
+            .withUsername(DB_USERNAME)
+            .withPassword(DB_PASSWORD)
+            .withExposedPorts(DB_PORT);
 
     public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            String url = "=jdbc:mariadb://" +
+            String dbUrl = DB_PREFIX +
                     MARIA_DB_CONTAINER.getContainerIpAddress() +
-                    ":" +
-                    MARIA_DB_CONTAINER.getMappedPort(3306) +
-                    "/testDB";
-            System.out.println(MARIA_DB_CONTAINER.getMappedPort(3306));
-            TestPropertyValues values = TestPropertyValues.of("spring.datasource.url" + url);
+                    ":" + MARIA_DB_CONTAINER.getMappedPort(DB_PORT) +
+                    "/" + DB_NAME;
+
+            TestPropertyValues values = TestPropertyValues.of(
+                    "spring.datasource.url=" + dbUrl,
+                    "spring.datasource.username=" + DB_USERNAME,
+                    "spring.datasource.password=" + DB_PASSWORD
+            );
             values.applyTo(configurableApplicationContext);
         }
     }
