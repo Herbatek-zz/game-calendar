@@ -9,14 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.containers.MariaDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+@Testcontainers
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GameControllerTest {
@@ -27,6 +28,12 @@ class GameControllerTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    @Container
+    private static final MariaDBContainer MARIA_DB_CONTAINER = new MariaDBContainer()
+            .withDatabaseName("testDB")
+            .withUsername("userTest")
+            .withPassword("strongPassword");
+
     @BeforeEach
     void beforeEach() {
         gameRepository.save(Game.builder().id(1L).name("The Witcher® 3: Wild Hunt").build());
@@ -35,6 +42,12 @@ class GameControllerTest {
 
     @Test
     void shouldReturnGameByGivenId() {
+
+        System.out.println("###############################");
+        System.out.println("is Maria created: " + MARIA_DB_CONTAINER.isCreated());
+        System.out.println("is Maria running: " + MARIA_DB_CONTAINER.isRunning());
+        System.out.println("###############################");
+
         // given
         var expectedGame = Game.builder()
                 .id(1L)
