@@ -10,6 +10,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -29,10 +30,11 @@ class GameControllerTest {
     private TestRestTemplate testRestTemplate;
 
     @Container
-    private static final MariaDBContainer MARIA_DB_CONTAINER = new MariaDBContainer()
+    private static final GenericContainer MARIA_DB_CONTAINER = new MariaDBContainer()
             .withDatabaseName("testDB")
             .withUsername("userTest")
-            .withPassword("strongPassword");
+            .withPassword("strongPassword")
+            .withExposedPorts(3306);
 
     @BeforeEach
     void beforeEach() {
