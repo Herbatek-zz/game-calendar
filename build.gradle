@@ -9,7 +9,7 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.piotrek'
-version = '0.0.1-SNAPSHOT'
+version = '19.03'
 sourceCompatibility = '11'
 
 configurations {
