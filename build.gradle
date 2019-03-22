@@ -25,11 +25,16 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'com.h2database:h2'
-    compileOnly 'org.projectlombok:lombok'
-    testCompile 'org.projectlombok:lombok'
+//    runtimeOnly 'com.h2database:h2'
+    compile 'org.mariadb.jdbc:mariadb-java-client:2.4.1'
+    
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    
+    testCompile "org.testcontainers:junit-jupiter:1.10.7"
+    testCompile 'org.testcontainers:mariadb:1.10.7'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0-M1'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.0-M1'
