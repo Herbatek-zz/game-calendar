@@ -33,12 +33,16 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
-    
-    testCompile "org.testcontainers:junit-jupiter:1.10.7"
-    testCompile 'org.testcontainers:mariadb:1.10.7'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0-M1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.0-M1'
-    testImplementation 'org.junit.platform:junit-platform-launcher:1.5.0-M1'
+    testImplementation "org.testcontainers:junit-jupiter:1.11.0"
+    testImplementation 'org.testcontainers:mariadb:1.11.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.5.0-M1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
