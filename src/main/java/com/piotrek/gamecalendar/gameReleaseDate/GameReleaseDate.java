@@ -1,14 +1,12 @@
-package com.piotrek.gamecalendar.gamingPlatform;
+package com.piotrek.gamecalendar.gameReleaseDate;
 
+import com.piotrek.gamecalendar.gamingPlatform.GamingPlatform;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
@@ -16,13 +14,14 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GamingPlatform {
+public class GameReleaseDate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
+    @OneToOne
+    @Transient
+    private GamingPlatform gamingPlatform;
     private LocalDate releaseDate;
 }
