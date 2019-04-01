@@ -33,8 +33,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
     
-    testCompile "org.testcontainers:junit-jupiter:1.10.7"
-    testCompile 'org.testcontainers:mariadb:1.10.7'
+    testCompile "org.testcontainers:junit-jupiter:1.11.1"
+    testCompile 'org.testcontainers:mariadb:1.11.1'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0-M1'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.0-M1'
