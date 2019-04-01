@@ -1,7 +1,7 @@
 package com.piotrek.gamecalendar.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.piotrek.gamecalendar.common.DateAudit;
+import com.piotrek.gamecalendar.util.DateAudit;
 import com.piotrek.gamecalendar.role.Role;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;

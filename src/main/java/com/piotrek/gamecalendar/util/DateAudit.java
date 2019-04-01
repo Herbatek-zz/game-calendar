@@ -1,4 +1,4 @@
-package com.piotrek.gamecalendar.common;
+package com.piotrek.gamecalendar.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
