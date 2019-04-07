@@ -13,7 +13,7 @@ public class UserValidator {
 
     private final UserRepository userRepository;
 
-    void checkUserBeforeSave(SignUpRequest signUpRequest) {
+    public void checkUserBeforeSave(SignUpRequest signUpRequest) {
         checkUsernameAvailability(signUpRequest);
         checkEmailAvailability(signUpRequest);
     }
