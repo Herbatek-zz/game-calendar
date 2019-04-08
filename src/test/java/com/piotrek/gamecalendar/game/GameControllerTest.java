@@ -8,6 +8,7 @@ import com.piotrek.gamecalendar.gameReleaseDate.GameReleaseDate;
 import com.piotrek.gamecalendar.gameReleaseDate.GameReleaseDateRepository;
 import com.piotrek.gamecalendar.gamingPlatform.GamingPlatform;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -37,6 +38,7 @@ class GameControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnGameByGivenId() throws JsonProcessingException {
         // given
         var expectedGame = gameRepository.save(Game.builder()
@@ -56,6 +58,7 @@ class GameControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Disabled
     void shouldThrowNotFoundExceptionWhenNotFoundGame() throws JsonProcessingException {
         // given
         var expectedResponse = new ErrorResponse(404, "Not found game with id 3");
@@ -72,6 +75,7 @@ class GameControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnEmptySetWhenNoPremieresInThisMonth() throws JsonProcessingException {
         // given
         var expectedSet = new HashSet<Game>();
@@ -88,6 +92,7 @@ class GameControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnOneElementInSetWhenOneGameHasPremiereInThisMonth() throws JsonProcessingException {
         // given
         var gameReleaseDate = gameReleaseDateRepository.save(GameReleaseDate.builder()

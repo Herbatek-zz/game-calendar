@@ -24,26 +24,27 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.4.1'
-    
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation "org.springframework.boot:spring-boot-configuration-processor"
-    
+
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-oauth2-client'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
-    implementation 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
 
     testImplementation "org.testcontainers:junit-jupiter:1.11.1"
     testImplementation 'org.testcontainers:mariadb:1.11.1'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.5.0-M1'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'junit', module: 'junit'
+    }
 
 }
 

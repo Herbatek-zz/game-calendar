@@ -6,6 +6,7 @@ import com.piotrek.gamecalendar.role.RoleRepository;
 import com.piotrek.gamecalendar.security.payload.SignUpRequest;
 import com.piotrek.gamecalendar.user.helpers.CustomTestModels;
 import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
