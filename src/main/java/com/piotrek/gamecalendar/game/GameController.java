@@ -3,6 +3,8 @@ package com.piotrek.gamecalendar.game;
 import com.piotrek.gamecalendar.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,11 @@ public class GameController {
     public Game find(@PathVariable Long id) {
         return gameRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not found game with id " + id));
+    }
+
+    @GetMapping
+    public Page<Game> findPage(Pageable pageable) {
+        return gameRepository.findAll(pageable);
     }
 
     // TODO logging
