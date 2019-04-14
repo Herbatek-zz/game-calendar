@@ -117,4 +117,19 @@ class GameControllerTest extends AbstractIntegrationTest {
                 .expectStatus().is2xxSuccessful()
                 .expectBody().json(objectMapper.writeValueAsString(expectedSet));
     }
+
+    @Test
+    @Disabled
+    void shouldReturnPageWith4ElementsWhen4ElementsAreAvailable() {
+        // given
+        // need to save 4x some games
+
+        // when
+        var exchange = webTestClient.get()
+                .uri("/games")
+                .exchange();
+
+        // then
+
+    }
 }

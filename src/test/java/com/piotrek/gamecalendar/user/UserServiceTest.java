@@ -6,6 +6,7 @@ import com.piotrek.gamecalendar.role.RoleRepository;
 import com.piotrek.gamecalendar.security.payload.SignUpRequest;
 import com.piotrek.gamecalendar.user.helpers.CustomTestModels;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -40,7 +41,8 @@ class UserServiceTest {
     private UserService userService;
 
     @Test
-    void shouldSaveWhenProperSignUpRequest() {
+    @DisplayName("Should save user, when proper SignUpRequest")
+    void shouldSaveWhenSaveAndProperSignUpRequest() {
         // given
         SignUpRequest signUpRequest = CustomTestModels.createTest123SignUpRequest();
         User user = CustomTestModels.createTest123User();
@@ -59,5 +61,11 @@ class UserServiceTest {
         verify(passwordEncoder, times(1)).encode(anyString());
         verify(roleRepository, times(1)).findByName(RoleName.ROLE_USER);
         verifyNoMoreInteractions(userRepository, roleRepository, passwordEncoder, userRepository);
+    }
+
+    @Test
+    @DisplayName("Should throw BadRequestException when invalid SignUpRequest")
+    void shouldThrowBadRequestExceptionWhenInvalidSignUpRequest() {
+        //TODO: need to implement test body
     }
 }

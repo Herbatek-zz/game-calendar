@@ -23,8 +23,8 @@ class UserValidatorTest {
     private UserValidator userValidator;
 
     @Test
-    @DisplayName("Should throw BadRequestException when checkUserBeforeSave and given username has been already used")
-    void shouldThrowBadRequestExceptionWhenCheckUserBeforeSaveAndGivenUsernameHasBeenUsed() {
+    @DisplayName("Should throw BadRequestException when given username has been already used")
+    void shouldThrowBadRequestExceptionWhenGivenUsernameHasBeenUsed() {
         // given
         var signUpRequest = CustomTestModels.createTest123SignUpRequest();
         given(userRepository.existsByUsername(signUpRequest.getUsername())).willReturn(true);
@@ -39,8 +39,8 @@ class UserValidatorTest {
     }
 
     @Test
-    @DisplayName("Should throw BadRequestException when checkUserBeforeSave and email has been already used")
-    void shouldThrowBadRequestExceptionWhenCheckUserBeforeSaveAndGivenEmailHasBeenUsed() {
+    @DisplayName("Should throw BadRequestException when email has been already used")
+    void shouldThrowBadRequestExceptionGivenEmailHasBeenUsed() {
         // given
         var signUpRequest = CustomTestModels.createTest123SignUpRequest();
         given(userRepository.existsByUsername(anyString())).willReturn(false);
@@ -57,8 +57,8 @@ class UserValidatorTest {
     }
 
     @Test
-    @DisplayName("Should do nothing when checkUserBeforeSave and username and email haven't been used")
-    void shouldDoNothingWhenCheckUserBeforeSaveAndUsernameAndEmailHaveNotBeenUsed() {
+    @DisplayName("Should do nothing when username and email haven't been used")
+    void shouldDoNothingWhenUsernameAndEmailHaveNotBeenUsed() {
         // given
         var signUpRequest = CustomTestModels.createTest123SignUpRequest();
         given(userRepository.existsByUsername(anyString())).willReturn(false);
