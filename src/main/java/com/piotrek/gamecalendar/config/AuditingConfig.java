@@ -26,14 +26,16 @@ public class AuditingConfig {
         public Optional<Long> getCurrentAuditor() {
             var authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if (authentication == null || !authentication.isAuthenticated() ||
-                    authentication instanceof AnonymousAuthenticationToken) {
+            if (authentication == null || !authentication.isAuthenticated() || isAnonymousAuthenticationToken(authentication))
                 return Optional.empty();
-            }
 
             UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
             return Optional.ofNullable(userPrincipal.getId());
+        }
+
+        private boolean isAnonymousAuthenticationToken(Authentication authentication) {
+            return authentication instanceof AnonymousAuthenticationToken;
         }
     }
 }

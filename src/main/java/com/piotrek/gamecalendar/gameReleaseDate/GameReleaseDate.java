@@ -24,4 +24,9 @@ public class GameReleaseDate {
     @Transient
     private GamingPlatform gamingPlatform;
     private LocalDate releaseDate;
+
+    public GameReleaseDate(GamingPlatform gamingPlatform, LocalDate releseDate) {
+        this.gamingPlatform = gamingPlatform;
+        this.releaseDate = releseDate;
+    }
 }

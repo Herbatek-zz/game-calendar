@@ -1,7 +1,6 @@
 package com.piotrek.gamecalendar.user;
 
-import com.piotrek.gamecalendar.user.helpers.CustomTestModels;
-import org.junit.jupiter.api.BeforeEach;
+import com.piotrek.gamecalendar.security.payload.SignUpRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +25,11 @@ class UserValidatorTest {
     @DisplayName("Should throw BadRequestException when given username has been already used")
     void shouldThrowBadRequestExceptionWhenGivenUsernameHasBeenUsed() {
         // given
-        var signUpRequest = CustomTestModels.createTest123SignUpRequest();
+        SignUpRequest signUpRequest = SignUpRequest.builder()
+                .username("tyra_borer")
+                .password("Oki6Thigh")
+                .email("casimir.wate@hotmail.com")
+                .build();
         given(userRepository.existsByUsername(signUpRequest.getUsername())).willReturn(true);
 
         // when
@@ -42,7 +45,11 @@ class UserValidatorTest {
     @DisplayName("Should throw BadRequestException when email has been already used")
     void shouldThrowBadRequestExceptionGivenEmailHasBeenUsed() {
         // given
-        var signUpRequest = CustomTestModels.createTest123SignUpRequest();
+        SignUpRequest signUpRequest = SignUpRequest.builder()
+                .username("tyra_borer")
+                .password("Oki6Thigh")
+                .email("casimir.wate@hotmail.com")
+                .build();
         given(userRepository.existsByUsername(anyString())).willReturn(false);
         given(userRepository.existsByEmail(signUpRequest.getEmail())).willReturn(true);
 
@@ -60,7 +67,11 @@ class UserValidatorTest {
     @DisplayName("Should do nothing when username and email haven't been used")
     void shouldDoNothingWhenUsernameAndEmailHaveNotBeenUsed() {
         // given
-        var signUpRequest = CustomTestModels.createTest123SignUpRequest();
+        SignUpRequest signUpRequest = SignUpRequest.builder()
+                .username("tyra_borer")
+                .password("Oki6Thigh")
+                .email("casimir.wate@hotmail.com")
+                .build();
         given(userRepository.existsByUsername(anyString())).willReturn(false);
         given(userRepository.existsByEmail(anyString())).willReturn(false);
 

@@ -1,5 +1,6 @@
 package com.piotrek.gamecalendar.game;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piotrek.gamecalendar.gameReleaseDate.GameReleaseDate;
 import com.piotrek.gamecalendar.gameSeries.GameSeries;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -23,9 +25,12 @@ public class Game {
 
     private String name;
 
-    @OneToMany
-    private Set<GameReleaseDate> releaseDates;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JsonIgnore
+    @Builder.Default
+    private Set<GameReleaseDate> releaseDates = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JsonIgnore
     private GameSeries gameSeries;
 }

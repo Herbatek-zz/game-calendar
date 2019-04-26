@@ -3,7 +3,6 @@ package com.piotrek.gamecalendar.config;
 import com.piotrek.gamecalendar.security.CustomUserDetailsService;
 import com.piotrek.gamecalendar.security.JwtAuthenticationEntryPoint;
 import com.piotrek.gamecalendar.security.JwtAuthenticationFilter;
-import com.piotrek.gamecalendar.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,13 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtTokenProvider tokenProvider;
-
-    // TODO: check if can add just @Component annotation on jwtAuthenticationFilter
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(tokenProvider, userDetailsService);
-    }
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -87,6 +80,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated();
 
-        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

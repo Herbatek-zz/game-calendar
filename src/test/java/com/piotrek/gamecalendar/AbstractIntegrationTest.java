@@ -1,5 +1,6 @@
 package com.piotrek.gamecalendar;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -7,10 +8,13 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import javax.annotation.Resource;
 
 @Testcontainers
 @ExtendWith(SpringExtension.class)
@@ -23,6 +27,12 @@ public class AbstractIntegrationTest {
     private final static String DB_USERNAME = "userTest";
     private final static String DB_PASSWORD = "strongPassword";
     private final static int DB_PORT = 3306;
+
+    @Resource
+    protected WebTestClient webTestClient;
+
+    @Resource
+    protected ObjectMapper objectMapper;
 
     @Container
     private static final GenericContainer MARIA_DB_CONTAINER = new MariaDBContainer()

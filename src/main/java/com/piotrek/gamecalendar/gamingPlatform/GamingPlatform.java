@@ -25,4 +25,13 @@ public class GamingPlatform {
     private String name;
 
     private LocalDate releaseDate;
+
+    public GamingPlatform(String name) {
+        this.name = name;
+    }
+
+    public GamingPlatform(String name, LocalDate releaseDate) {
+        this.name = name;
+        this.releaseDate = releaseDate;
+    }
 }

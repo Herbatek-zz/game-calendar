@@ -1,21 +1,19 @@
 package com.piotrek.gamecalendar.game;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.piotrek.gamecalendar.AbstractIntegrationTest;
 import com.piotrek.gamecalendar.exceptions.ErrorResponse;
-import com.piotrek.gamecalendar.gameReleaseDate.GameReleaseDate;
 import com.piotrek.gamecalendar.gameReleaseDate.GameReleaseDateRepository;
-import com.piotrek.gamecalendar.gamingPlatform.GamingPlatform;
+import com.piotrek.gamecalendar.gamingPlatform.GamingPlatformRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 class GameControllerTest extends AbstractIntegrationTest {
 
@@ -26,29 +24,24 @@ class GameControllerTest extends AbstractIntegrationTest {
     private GameReleaseDateRepository gameReleaseDateRepository;
 
     @Resource
-    private WebTestClient webTestClient;
-
-    @Resource
-    private ObjectMapper objectMapper;
+    private GamingPlatformRepository gamingPlatformRepository;
 
     @BeforeEach
     void beforeEach() {
         gameRepository.deleteAll();
         gameReleaseDateRepository.deleteAll();
+        gamingPlatformRepository.deleteAll();
     }
 
     @Test
-    @Disabled
-    void shouldReturnGameByGivenId() throws JsonProcessingException {
+    @DisplayName("Should return a game by given id, when the game exists")
+    void shouldReturnGameByGivenIdWhenTheGameExists() throws JsonProcessingException {
         // given
-        var expectedGame = gameRepository.save(Game.builder()
-                .id(1L)
-                .name("The Witcher® 3: Wild Hunt")
-                .releaseDates(Set.of()).build());
+        var expectedGame = gameRepository.save(GameTestObject.builder().witcher().withId(1L).build());
 
         // when
         var exchange = webTestClient.get()
-                .uri("/games/" + expectedGame.getId())
+                .uri("api/games/" + expectedGame.getId())
                 .exchange();
 
         // then
@@ -58,14 +51,14 @@ class GameControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Disabled
+    @DisplayName("Should throw not found exception when game with given id doesn't exist")
     void shouldThrowNotFoundExceptionWhenNotFoundGame() throws JsonProcessingException {
         // given
         var expectedResponse = new ErrorResponse(404, "Not found game with id 3");
 
         // when
         var exchange = webTestClient.get()
-                .uri("/games/3")
+                .uri("api/games/3")
                 .exchange();
 
         // then
@@ -75,61 +68,40 @@ class GameControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Disabled
-    void shouldReturnEmptySetWhenNoPremieresInThisMonth() throws JsonProcessingException {
+    @DisplayName("Should return empty page when no games at all")
+    void shouldReturnEmptyPageWhenNoGames() throws JsonProcessingException {
         // given
-        var expectedSet = new HashSet<Game>();
+        var expectedResponse = new PageImpl<Game>(new ArrayList<>(), PageRequest.of(0, 20), 0);
 
         // when
         var exchange = webTestClient.get()
-                .uri("/games/this-month-premieres")
+                .uri("api/games")
                 .exchange();
 
         // then
         exchange
                 .expectStatus().is2xxSuccessful()
-                .expectBody().json(objectMapper.writeValueAsString(expectedSet));
+                .expectBody().json(objectMapper.writeValueAsString(expectedResponse));
     }
 
     @Test
-    @Disabled
-    void shouldReturnOneElementInSetWhenOneGameHasPremiereInThisMonth() throws JsonProcessingException {
+    @DisplayName("Should return page with three games when three games are available")
+    void shouldReturnPageWith3GamesWhen3GamesAreInDatabase() throws JsonProcessingException {
         // given
-        var gameReleaseDate = gameReleaseDateRepository.save(GameReleaseDate.builder()
-                .gamingPlatform(GamingPlatform.builder().name("PC").build())
-                .releaseDate(LocalDate.now()).build());
+        var witcher = gameRepository.save(GameTestObject.builder().witcher().build());
+        var csgo = gameRepository.save(GameTestObject.builder().counterStrikeGlobalOffensive().build());
+        var hearthstone = gameRepository.save(GameTestObject.builder().hearthstone().build());
 
-        var onlyGame = gameRepository.save(Game.builder()
-                .id(3L)
-                .name("Stronghold")
-                .releaseDates(Set.of(gameReleaseDate)).build());
-
-        var expectedSet = new HashSet<>();
-        expectedSet.add(onlyGame);
+        var expectedResponse = new PageImpl<>(List.of(witcher, csgo, hearthstone), PageRequest.of(0, 20), 3);
 
         // when
         var exchange = webTestClient.get()
-                .uri("/games/this-month-premieres")
+                .uri("api/games")
                 .exchange();
 
         // then
         exchange
                 .expectStatus().is2xxSuccessful()
-                .expectBody().json(objectMapper.writeValueAsString(expectedSet));
-    }
-
-    @Test
-    @Disabled
-    void shouldReturnPageWith4ElementsWhen4ElementsAreAvailable() {
-        // given
-        // need to save 4x some games
-
-        // when
-        var exchange = webTestClient.get()
-                .uri("/games")
-                .exchange();
-
-        // then
-
+                .expectBody().json(objectMapper.writeValueAsString(expectedResponse));
     }
 }

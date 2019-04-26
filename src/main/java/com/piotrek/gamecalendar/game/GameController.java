@@ -31,17 +31,17 @@ public class GameController {
         return gameRepository.findAll(pageable);
     }
 
-    // TODO logging
-    // TODO Use PagedResponse + create GameRequest and GameResponse - and return it instead of Game
-    @GetMapping("/this-month-premieres")
-    public Set<Game> findThisMonthPremieres() {
-        return gameRepository.findAllByMonthPremiere(LocalDate.now());
-    }
+//     TODO logging
+//     TODO Use PagedResponse + create GameRequest and GameResponse - and return it instead of Game
+//    @GetMapping("/this-month-premieres")
+//    public Set<Game> findThisMonthPremieres() {
+//        return gameRepository.findAllByMonthPremiere(LocalDate.now());
+//    }
 
-    // TODO need to create role moderator or something like that
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public Game create(@RequestBody @Valid Game game) {
-        return null;
-    }
+//     TODO need to create role moderator or something like that
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PostMapping
+//    public Game create(@RequestBody @Valid Game game) {
+//        return null;
+//    }
 }
