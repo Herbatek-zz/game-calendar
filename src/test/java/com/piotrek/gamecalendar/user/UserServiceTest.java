@@ -5,6 +5,7 @@ import com.piotrek.gamecalendar.role.Role;
 import com.piotrek.gamecalendar.role.RoleName;
 import com.piotrek.gamecalendar.role.RoleRepository;
 import com.piotrek.gamecalendar.security.payload.SignUpRequest;
+import com.piotrek.gamecalendar.user.dto.UserProfile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -137,14 +138,15 @@ class UserServiceTest {
         final long ID = 15;
         final String USERNAME = "Grzesku96";
         final User expectedUser = User.builder().username(USERNAME).id(ID).build();
+        final UserProfile expectedUserProfile = expectedUser.toUserProfile();
 
         given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(expectedUser));
 
         // when
-        User result = userService.findByUsername(USERNAME);
+        UserProfile result = userService.findByUsername(USERNAME);
 
         // then
-        then(result).isEqualTo(expectedUser);
+        then(result).isEqualTo(expectedUserProfile);
         verify(userRepository, times(1)).findByUsername(USERNAME);
         verifyNoMoreInteractions(userRepository, roleRepository, passwordEncoder, userRepository);
     }

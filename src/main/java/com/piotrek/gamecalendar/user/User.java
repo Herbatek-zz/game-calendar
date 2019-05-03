@@ -1,6 +1,7 @@
 package com.piotrek.gamecalendar.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.piotrek.gamecalendar.user.dto.UserProfile;
 import com.piotrek.gamecalendar.util.DateAudit;
 import com.piotrek.gamecalendar.role.Role;
 import lombok.*;
@@ -51,4 +52,11 @@ public class User extends DateAudit {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    public UserProfile toUserProfile() {
+        return UserProfile.builder()
+                .id(id)
+                .username(username)
+                .email(email)
+                .imageUrl(imageUrl).build();
+    }
 }

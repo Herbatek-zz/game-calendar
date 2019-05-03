@@ -56,7 +56,7 @@ class UserControllerTest extends AbstractIntegrationTest {
         // given
         final String USERNAME = "Piotrkacz22";
 
-        var expectedUser = userRepository.save(User.builder()
+        var expectedResponse = userRepository.save(User.builder()
                 .id(144L)
                 .username(USERNAME)
                 .roles(Set.of(Role.builder().name(RoleName.ROLE_USER).build()))
@@ -64,7 +64,8 @@ class UserControllerTest extends AbstractIntegrationTest {
                 .password("tajneHaselko999")
                 .emailVerified(true)
                 .imageUrl("obrazek.pl/342512")
-                .build());
+                .build())
+                .toUserProfile();
 
         // when
         var exchange = webTestClient.get()
@@ -74,7 +75,7 @@ class UserControllerTest extends AbstractIntegrationTest {
         // then
         exchange
                 .expectStatus().is2xxSuccessful()
-                .expectBody().json(objectMapper.writeValueAsString(expectedUser));
+                .expectBody().json(objectMapper.writeValueAsString(expectedResponse));
     }
 
     @Test

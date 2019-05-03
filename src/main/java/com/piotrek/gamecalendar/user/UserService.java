@@ -6,6 +6,7 @@ import com.piotrek.gamecalendar.role.Role;
 import com.piotrek.gamecalendar.role.RoleName;
 import com.piotrek.gamecalendar.role.RoleRepository;
 import com.piotrek.gamecalendar.security.payload.SignUpRequest;
+import com.piotrek.gamecalendar.user.dto.UserProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,9 +33,10 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found user with id: " + id));
     }
 
-    public User findByUsername(String username) {
+    public UserProfile findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new NotFoundException("Not found user with username: " + username));
+                .orElseThrow(() -> new NotFoundException("Not found user with username: " + username))
+                .toUserProfile();
     }
 
     private User createUser(SignUpRequest signUpRequest) {

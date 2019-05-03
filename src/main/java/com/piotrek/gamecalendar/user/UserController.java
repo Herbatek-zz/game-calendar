@@ -1,5 +1,6 @@
 package com.piotrek.gamecalendar.user;
 
+import com.piotrek.gamecalendar.user.dto.UserProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class UserController {
     // TODO return users profile{username}
 
     @GetMapping("/{username}")
-    public User findByUsername(@PathVariable String username) {
+    public UserProfile findByUsername(@PathVariable String username) {
         return userService.findByUsername(username);
     }
 
