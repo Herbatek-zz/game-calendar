@@ -8,7 +8,7 @@ class UserControllerTest extends AbstractIntegrationTest {
 
     @Test
     @DisplayName("Should return current authenticated user")
-    void shouldGetCurrentAuthenticatedUser() {
+    void shouldGetCurrentAuthenticatedUserWhenFoundUserThenReturnUser() {
         // given
         var expectedResponse = "ME";
 
@@ -21,5 +21,16 @@ class UserControllerTest extends AbstractIntegrationTest {
         exchange
                 .expectStatus().is2xxSuccessful()
                 .expectBody(String.class).isEqualTo(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("Should return current authenticated user")
+    void shouldGetCurrentAuthenticatedUserWhenNotFoundThenThrowNotFoundException() {
+        // given
+
+        // when
+
+        // then
+
     }
 }

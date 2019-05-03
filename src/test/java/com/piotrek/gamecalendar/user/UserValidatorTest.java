@@ -22,8 +22,8 @@ class UserValidatorTest {
     private UserValidator userValidator;
 
     @Test
-    @DisplayName("Should throw BadRequestException when given username has been already used")
-    void shouldThrowBadRequestExceptionWhenGivenUsernameHasBeenUsed() {
+    @DisplayName("Should check user before save, when username is already used, then throw BadRequestException")
+    void shouldCheckUserBeforeSaveWhenUsernameIsTakenThenThrowBadRequestException() {
         // given
         SignUpRequest signUpRequest = SignUpRequest.builder()
                 .username("tyra_borer")
@@ -36,14 +36,14 @@ class UserValidatorTest {
         Throwable throwable = catchThrowable(() -> userValidator.checkUserBeforeSave(signUpRequest));
 
         //then
-        then(throwable).hasMessageContaining("Username is already taken");
+        then(throwable).hasMessageContaining("Username is already taken").hasSameClassAs(throwable);
         verify(userRepository, times(1)).existsByUsername(anyString());
         verifyNoMoreInteractions(userRepository);
     }
 
     @Test
-    @DisplayName("Should throw BadRequestException when email has been already used")
-    void shouldThrowBadRequestExceptionGivenEmailHasBeenUsed() {
+    @DisplayName("Should check user before save, when email is already taken, then throw BadRequestException")
+    void shouldCheckUserBeforeSaveWhenEmailIsTakenThenThrowBadRequestException() {
         // given
         SignUpRequest signUpRequest = SignUpRequest.builder()
                 .username("tyra_borer")
@@ -57,15 +57,15 @@ class UserValidatorTest {
         Throwable throwable = catchThrowable(() -> userValidator.checkUserBeforeSave(signUpRequest));
 
         //then
-        then(throwable).hasMessageContaining("Email is already taken");
+        then(throwable).hasMessageContaining("Email is already taken").hasSameClassAs(throwable);
         verify(userRepository, times(1)).existsByUsername(anyString());
         verify(userRepository, times(1)).existsByEmail(anyString());
         verifyNoMoreInteractions(userRepository);
     }
 
     @Test
-    @DisplayName("Should do nothing when username and email haven't been used")
-    void shouldDoNothingWhenUsernameAndEmailHaveNotBeenUsed() {
+    @DisplayName("Should check user before save, when everything is proper, then do nothing")
+    void shouldCheckUserBeforeSaveWhenDataIsProperThenDoNothing() {
         // given
         SignUpRequest signUpRequest = SignUpRequest.builder()
                 .username("tyra_borer")

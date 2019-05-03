@@ -62,7 +62,7 @@ class CustomUserDetailsServiceTest {
         Throwable throwable = catchThrowable(() -> customUserDetailsService.loadUserByUsername(EMAIL));
 
         // then
-        then(throwable).hasMessage("Not found user with username or email: " + EMAIL);
+        then(throwable).hasMessage("Not found user with username or email: " + EMAIL).hasSameClassAs(throwable);
         verify(userRepository).findByEmailOrUsername(EMAIL, EMAIL);
         verifyNoMoreInteractions(userRepository);
     }
@@ -99,7 +99,7 @@ class CustomUserDetailsServiceTest {
         Throwable throwable = catchThrowable(() -> customUserDetailsService.loadUserById(ID));
 
         // then
-        then(throwable).hasMessage("Not found user with id: " + ID);
+        then(throwable).hasMessage("Not found user with id: " + ID).hasSameClassAs(throwable);
         verify(userRepository).findById(ID);
         verifyNoMoreInteractions(userRepository);
     }

@@ -42,20 +42,22 @@ class UserServiceTest {
     private UserService userService;
 
     @Test
-    @DisplayName("Should save user, when proper SignUpRequest")
-    void shouldSaveUserWhenSaveAndSignUpRequestIsProper() {
+    @DisplayName("Should save user, when proper SignUpRequest, then save user")
+    void shouldSaveUserWhenSignUpRequestIsValidThenSaveUser() {
         // given
         SignUpRequest signUpRequest = SignUpRequest.builder()
                 .username("tyra_borer")
                 .password("Oki6Thigh")
                 .email("casimir.wate@hotmail.com")
                 .build();
+
         User user = User.builder()
                 .username("tyra_borer")
                 .password("Oki6Thigh")
                 .email("casimir.wate@hotmail.com")
                 .roles(Set.of(new Role(RoleName.ROLE_USER)))
                 .build();
+
         given(userRepository.save(any(User.class))).willReturn(user);
         given(passwordEncoder.encode(signUpRequest.getPassword())).willReturn(signUpRequest.getPassword());
         given(roleRepository.findByName(RoleName.ROLE_USER)).willReturn(Optional.of(new Role(RoleName.ROLE_USER)));
@@ -73,22 +75,93 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw BadRequestException when invalid SignUpRequest")
-    void shouldThrowBadRequestExceptionWhenInvalidSignUpRequest() {
+    @DisplayName("Should save user, when invalid SignUpRequest, then throw BadRequestException")
+    void shouldSaveUserWhenInvalidSignUpRequestThenThrowBadRequestException() {
         // given
         SignUpRequest signUpRequest = SignUpRequest.builder()
                 .username("tyra_borer")
                 .password("Oki6Thigh")
                 .email("casimir.wate@hotmail.com")
                 .build();
+
         willThrow(new BadRequestException("Email is already taken")).given(userValidator).checkUserBeforeSave(signUpRequest);
 
         // when
         Throwable throwable = catchThrowable(() -> userService.save(signUpRequest));
 
         // then
-        then(throwable).hasMessageContaining("Email is already taken");
+        then(throwable).hasMessageContaining("Email is already taken").hasSameClassAs(throwable);
         verify(userValidator, times(1)).checkUserBeforeSave(signUpRequest);
+        verifyNoMoreInteractions(userRepository, roleRepository, passwordEncoder, userRepository);
+    }
+
+    @Test
+    @DisplayName("Should return user by id, when user exists, then return user")
+    void shouldFindUserByIdWhenFoundUserThenReturnUser() {
+        // given
+        final long ID = 15;
+        final User expectedUser = User.builder().username("Grzesku69").id(ID).build();
+
+        given(userRepository.findById(ID)).willReturn(Optional.of(expectedUser));
+
+        // when
+        User result = userService.findById(ID);
+
+        // then
+        then(result).isEqualTo(expectedUser);
+        verify(userRepository, times(1)).findById(ID);
+        verifyNoMoreInteractions(userRepository, roleRepository, passwordEncoder, userRepository);
+    }
+
+    @Test
+    @DisplayName("Should return user by id, when user doesn't exist, then throw NotFoundException")
+    void shouldFindUserByIdWhenUserDoesntExistThenThrowNotFoundException() {
+        // given
+        final long ID = 15;
+
+        given(userRepository.findById(ID)).willReturn(Optional.empty());
+
+        // when
+        Throwable throwable = catchThrowable(() -> userService.findById(ID));
+
+        // then
+        then(throwable).hasMessageContaining("Not found user with id: " + ID).hasSameClassAs(throwable);
+        verify(userRepository, times(1)).findById(15L);
+        verifyNoMoreInteractions(userRepository, roleRepository, passwordEncoder, userRepository);
+    }
+
+    @Test
+    @DisplayName("Should return user by username, when user exists, then return user")
+    void shouldFindUserByUsernameWhenFoundUserThenReturnUser() {
+        // given
+        final long ID = 15;
+        final String USERNAME = "Grzesku96";
+        final User expectedUser = User.builder().username(USERNAME).id(ID).build();
+
+        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(expectedUser));
+
+        // when
+        User result = userService.findByUsername(USERNAME);
+
+        // then
+        then(result).isEqualTo(expectedUser);
+        verify(userRepository, times(1)).findByUsername(USERNAME);
+        verifyNoMoreInteractions(userRepository, roleRepository, passwordEncoder, userRepository);
+    }
+
+    @Test
+    @DisplayName("Should return user by username, when user doesn't exist, then throw NotFoundException")
+    void shouldFindUserByUsernameWhenUserDoesntExistThenThrowNotFoundException() {
+        // given
+        final String USERNAME = "Grzesku96";
+        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.empty());
+
+        // when
+        Throwable throwable = catchThrowable(() -> userService.findByUsername(USERNAME));
+
+        // then
+        then(throwable).hasMessageContaining("Not found user with username: " + USERNAME).hasSameClassAs(throwable);
+        verify(userRepository, times(1)).findByUsername(USERNAME);
         verifyNoMoreInteractions(userRepository, roleRepository, passwordEncoder, userRepository);
     }
 }

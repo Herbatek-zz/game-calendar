@@ -1,6 +1,7 @@
 package com.piotrek.gamecalendar.user;
 
 import com.piotrek.gamecalendar.exceptions.BadRequestException;
+import com.piotrek.gamecalendar.exceptions.NotFoundException;
 import com.piotrek.gamecalendar.role.Role;
 import com.piotrek.gamecalendar.role.RoleName;
 import com.piotrek.gamecalendar.role.RoleRepository;
@@ -25,6 +26,15 @@ public class UserService {
     public User save(SignUpRequest signUpRequest) {
         userValidator.checkUserBeforeSave(signUpRequest);
         return userRepository.save(createUser(signUpRequest));
+    }
+
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found user with id: " + id));
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("Not found user with username: " + username));
     }
 
     private User createUser(SignUpRequest signUpRequest) {
