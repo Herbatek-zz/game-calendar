@@ -11,7 +11,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MariaDBContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.annotation.Resource;
@@ -34,12 +33,17 @@ public class AbstractIntegrationTest {
     @Resource
     protected ObjectMapper objectMapper;
 
-    @Container
-    private static final GenericContainer MARIA_DB_CONTAINER = new MariaDBContainer()
-            .withDatabaseName(DB_NAME)
-            .withUsername(DB_USERNAME)
-            .withPassword(DB_PASSWORD)
-            .withExposedPorts(DB_PORT);
+    private static final GenericContainer MARIA_DB_CONTAINER;
+
+    static {
+        MARIA_DB_CONTAINER = new MariaDBContainer()
+                .withDatabaseName(DB_NAME)
+                .withUsername(DB_USERNAME)
+                .withPassword(DB_PASSWORD)
+                .withExposedPorts(DB_PORT);
+
+        MARIA_DB_CONTAINER.start();
+    }
 
     public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 

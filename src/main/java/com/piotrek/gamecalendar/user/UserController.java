@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     public User findByUsername(@PathVariable String username) {
-        return null;
+        return userService.findByUsername(username);
     }
 
     // TODO return users favourite games
