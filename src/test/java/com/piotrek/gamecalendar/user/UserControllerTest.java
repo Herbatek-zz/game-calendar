@@ -24,9 +24,18 @@ class UserControllerTest extends AbstractIntegrationTest {
 
     @Test
     @DisplayName("Should return current authenticated user")
-    void shouldGetCurrentAuthenticatedUserWhenFoundUserThenReturnUser() {
+    void shouldGetCurrentAuthenticatedUserWhenFoundUserThenReturnUser() throws JsonProcessingException {
         // given
-        var expectedResponse = "ME";
+        var expectedResponse = userRepository.save(User.builder()
+                .id(144L)
+                .username("Piotrkacz22")
+                .roles(Set.of(Role.builder().name(RoleName.ROLE_USER).build()))
+                .email("piotr999@email.com")
+                .password("tajneHaselko999")
+                .emailVerified(true)
+                .imageUrl("obrazek.pl/342512")
+                .build())
+                .toUserProfile();
 
         // when
         var exchange = webTestClient.get()
@@ -36,7 +45,7 @@ class UserControllerTest extends AbstractIntegrationTest {
         // then
         exchange
                 .expectStatus().is2xxSuccessful()
-                .expectBody(String.class).isEqualTo(expectedResponse);
+                .expectBody().json(objectMapper.writeValueAsString(expectedResponse));
     }
 
     @Test
