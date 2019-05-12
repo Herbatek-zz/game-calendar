@@ -1,6 +1,6 @@
 package com.piotrek.gamecalendar;
 
-import com.piotrek.gamecalendar.security.AuthProperties;
+import com.piotrek.gamecalendar.security.oauth2.AuthProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

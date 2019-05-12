@@ -2,7 +2,7 @@ package com.piotrek.gamecalendar.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piotrek.gamecalendar.role.Role;
-import com.piotrek.gamecalendar.security.AuthProvider;
+import com.piotrek.gamecalendar.security.oauth2.AuthProvider;
 import com.piotrek.gamecalendar.user.dto.UserProfile;
 import com.piotrek.gamecalendar.util.DateAudit;
 import lombok.*;

@@ -20,7 +20,7 @@ public class JwtTokenProvider {
     @Value("${application.jwt.expiration-in-seconds}")
     private int expiration;
 
-    String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication) {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 

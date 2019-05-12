@@ -1,4 +1,4 @@
-package com.piotrek.gamecalendar.security;
+package com.piotrek.gamecalendar.security.oauth2;
 
 import lombok.Getter;
 import lombok.Setter;

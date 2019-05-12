@@ -3,6 +3,10 @@ package com.piotrek.gamecalendar.config;
 import com.piotrek.gamecalendar.security.CustomUserDetailsService;
 import com.piotrek.gamecalendar.security.JwtAuthenticationEntryPoint;
 import com.piotrek.gamecalendar.security.JwtAuthenticationFilter;
+import com.piotrek.gamecalendar.security.oauth2.CustomOAuth2UserService;
+import com.piotrek.gamecalendar.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.piotrek.gamecalendar.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.piotrek.gamecalendar.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +30,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService userDetailsService;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -51,34 +59,53 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .cors()
-                .and()
+                    .and()
                 .csrf()
-                .disable()
+                    .disable()
+                .formLogin()
+                    .disable()
+                .httpBasic()
+                    .disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .and()
+                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                    .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
                 .authorizeRequests()
-                .antMatchers("/",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js")
-                .permitAll()
-                .antMatchers("/api/auth/**")
-                .permitAll()
-                .antMatchers("/api/user/check-username-availability", "/api/user/check-email-availability")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/games/**", "/api/users/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated();
+                    .antMatchers("/",
+                            "/error",
+                            "/favicon.ico",
+                            "/**/*.png",
+                            "/**/*.gif",
+                            "/**/*.svg",
+                            "/**/*.jpg",
+                            "/**/*.html",
+                            "/**/*.css",
+                            "/**/*.js")
+                        .permitAll()
+                    .antMatchers("/api/auth/**", "/api/oauth2/**")
+                        .permitAll()
+                    .antMatchers("/api/user/check-username-availability", "/api/user/check-email-availability")
+                        .permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/games/**", "/api/users/**")
+                        .permitAll()
+                    .anyRequest()
+                        .authenticated()
+                    .and()
+                .oauth2Login()
+                    .authorizationEndpoint()
+                        .baseUri("/api/oauth2/authorize")
+                        .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository)
+                        .and()
+                .redirectionEndpoint()
+                    .baseUri("/api/oauth2/callback/*")
+                    .and()
+                .userInfoEndpoint()
+                    .userService(customOAuth2UserService)
+                    .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
