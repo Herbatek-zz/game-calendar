@@ -1,4 +1,4 @@
-package com.piotrek.gamecalendar.gameSeries;
+package com.piotrek.gamecalendar.game_series;
 
 import com.piotrek.gamecalendar.game.Game;
 import lombok.Data;

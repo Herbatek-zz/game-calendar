@@ -1,4 +1,4 @@
-package com.piotrek.gamecalendar.gamingPlatform;
+package com.piotrek.gamecalendar.gaming_platform;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 

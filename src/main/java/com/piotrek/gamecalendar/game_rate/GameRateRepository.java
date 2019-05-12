@@ -1,4 +1,4 @@
-package com.piotrek.gamecalendar.gameRate;
+package com.piotrek.gamecalendar.game_rate;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 

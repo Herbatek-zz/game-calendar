@@ -1,4 +1,4 @@
-package com.piotrek.gamecalendar.gameDeveloper;
+package com.piotrek.gamecalendar.game_genre;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class GameDeveloper {
+public class GameGenre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

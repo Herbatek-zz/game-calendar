@@ -5,6 +5,7 @@ import com.piotrek.gamecalendar.role.Role;
 import com.piotrek.gamecalendar.role.RoleName;
 import com.piotrek.gamecalendar.role.RoleRepository;
 import com.piotrek.gamecalendar.security.payload.SignUpRequest;
+import com.piotrek.gamecalendar.test_data.UserTestObject;
 import com.piotrek.gamecalendar.user.dto.UserProfile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
@@ -46,17 +46,18 @@ class UserServiceTest {
     @DisplayName("Should save user, when proper SignUpRequest, then save user")
     void shouldSaveUserWhenSignUpRequestIsValidThenSaveUser() {
         // given
-        SignUpRequest signUpRequest = SignUpRequest.builder()
-                .username("tyra_borer")
-                .password("Oki6Thigh")
-                .email("casimir.wate@hotmail.com")
+        final User user = UserTestObject.builder()
+                .piotrek()
+                .withRoleUser()
+                .withCorrectEmail()
+                .withEmailVerified()
+                .withCorrectPasswordPassword()
                 .build();
 
-        User user = User.builder()
-                .username("tyra_borer")
-                .password("Oki6Thigh")
-                .email("casimir.wate@hotmail.com")
-                .roles(Set.of(new Role(RoleName.ROLE_USER)))
+        final SignUpRequest signUpRequest = SignUpRequest.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .email(user.getEmail())
                 .build();
 
         given(userRepository.save(any(User.class))).willReturn(user);
@@ -79,7 +80,7 @@ class UserServiceTest {
     @DisplayName("Should save user, when invalid SignUpRequest, then throw BadRequestException")
     void shouldSaveUserWhenInvalidSignUpRequestThenThrowBadRequestException() {
         // given
-        SignUpRequest signUpRequest = SignUpRequest.builder()
+        final SignUpRequest signUpRequest = SignUpRequest.builder()
                 .username("tyra_borer")
                 .password("Oki6Thigh")
                 .email("casimir.wate@hotmail.com")
@@ -101,7 +102,14 @@ class UserServiceTest {
     void shouldFindUserByIdWhenFoundUserThenReturnUser() {
         // given
         final long ID = 15;
-        final User expectedUser = User.builder().username("Grzesku69").id(ID).build();
+        final User expectedUser = UserTestObject.builder()
+                .piotrek()
+                .withId(ID)
+                .withRoleUser()
+                .withCorrectEmail()
+                .withEmailVerified()
+                .withCorrectPasswordPassword()
+                .build();
 
         given(userRepository.findById(ID)).willReturn(Optional.of(expectedUser));
 
@@ -136,18 +144,24 @@ class UserServiceTest {
     void shouldFindUserByUsernameWhenFoundUserThenReturnUser() {
         // given
         final long ID = 15;
-        final String USERNAME = "Grzesku96";
-        final User expectedUser = User.builder().username(USERNAME).id(ID).build();
+        final User expectedUser = UserTestObject.builder()
+                .piotrek()
+                .withId(ID)
+                .withRoleUser()
+                .withCorrectEmail()
+                .withEmailVerified()
+                .withCorrectPasswordPassword()
+                .build();
         final UserProfile expectedUserProfile = expectedUser.toUserProfile();
 
-        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(expectedUser));
+        given(userRepository.findByUsername(UserTestObject.PIOTREK_USERNAME)).willReturn(Optional.of(expectedUser));
 
         // when
-        UserProfile result = userService.findByUsername(USERNAME);
+        UserProfile result = userService.findByUsername(UserTestObject.PIOTREK_USERNAME);
 
         // then
         then(result).isEqualTo(expectedUserProfile);
-        verify(userRepository, times(1)).findByUsername(USERNAME);
+        verify(userRepository, times(1)).findByUsername(UserTestObject.PIOTREK_USERNAME);
         verifyNoMoreInteractions(userRepository, roleRepository, passwordEncoder, userRepository);
     }
 
@@ -155,15 +169,14 @@ class UserServiceTest {
     @DisplayName("Should return user by username, when user doesn't exist, then throw NotFoundException")
     void shouldFindUserByUsernameWhenUserDoesntExistThenThrowNotFoundException() {
         // given
-        final String USERNAME = "Grzesku96";
-        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.empty());
+        given(userRepository.findByUsername(UserTestObject.PIOTREK_USERNAME)).willReturn(Optional.empty());
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.findByUsername(USERNAME));
+        Throwable throwable = catchThrowable(() -> userService.findByUsername(UserTestObject.PIOTREK_USERNAME));
 
         // then
-        then(throwable).hasMessageContaining("Not found user with username: " + USERNAME).hasSameClassAs(throwable);
-        verify(userRepository, times(1)).findByUsername(USERNAME);
+        then(throwable).hasMessageContaining("Not found user with username: " + UserTestObject.PIOTREK_USERNAME).hasSameClassAs(throwable);
+        verify(userRepository, times(1)).findByUsername(UserTestObject.PIOTREK_USERNAME);
         verifyNoMoreInteractions(userRepository, roleRepository, passwordEncoder, userRepository);
     }
 }

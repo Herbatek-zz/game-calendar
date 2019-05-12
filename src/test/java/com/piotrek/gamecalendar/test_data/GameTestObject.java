@@ -1,14 +1,15 @@
-package com.piotrek.gamecalendar.game;
+package com.piotrek.gamecalendar.test_data;
 
-import com.piotrek.gamecalendar.gameReleaseDate.GameReleaseDate;
-import com.piotrek.gamecalendar.gameSeries.GameSeries;
-import com.piotrek.gamecalendar.gamingPlatform.GamingPlatform;
+import com.piotrek.gamecalendar.game.Game;
+import com.piotrek.gamecalendar.game_release_date.GameReleaseDate;
+import com.piotrek.gamecalendar.game_series.GameSeries;
+import com.piotrek.gamecalendar.gaming_platform.GamingPlatform;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.Set;
 
-class GameTestObject {
+public class GameTestObject {
 
     @Getter
     private Game game;
@@ -17,11 +18,11 @@ class GameTestObject {
         game = new Game();
     }
 
-    static GameTestObject builder() {
+    public static GameTestObject builder() {
         return new GameTestObject();
     }
 
-    GameTestObject witcher() {
+    public GameTestObject theWitcher() {
         var windowsReleaseDate = GameReleaseDate.builder()
                 .gamingPlatform(new GamingPlatform("Windows"))
                 .releaseDate(LocalDate.of(2007, 10, 26))
@@ -39,7 +40,7 @@ class GameTestObject {
         return this;
     }
 
-    GameTestObject counterStrikeGlobalOffensive() {
+    public GameTestObject counterStrikeGlobalOffensive() {
         var windowsReleaseDate = GameReleaseDate.builder()
                 .gamingPlatform(new GamingPlatform("Windows"))
                 .releaseDate(LocalDate.of(2012, 8, 1))
@@ -74,7 +75,7 @@ class GameTestObject {
         return this;
     }
 
-    GameTestObject hearthstone() {
+    public GameTestObject hearthstone() {
         var windowsReleaseDate = GameReleaseDate.builder()
                 .gamingPlatform(new GamingPlatform("Windows"))
                 .releaseDate(LocalDate.of(2014, 3, 11))
@@ -88,12 +89,12 @@ class GameTestObject {
         return this;
     }
 
-    GameTestObject withId(Long id) {
+    public GameTestObject withId(Long id) {
         game.setId(id);
         return this;
     }
 
-    Game build() {
+    public Game build() {
         return this.game;
     }
 }

@@ -1,6 +1,6 @@
-package com.piotrek.gamecalendar.gameReleaseDate;
+package com.piotrek.gamecalendar.game_release_date;
 
-import com.piotrek.gamecalendar.gamingPlatform.GamingPlatform;
+import com.piotrek.gamecalendar.gaming_platform.GamingPlatform;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

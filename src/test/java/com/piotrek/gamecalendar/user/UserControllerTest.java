@@ -3,37 +3,39 @@ package com.piotrek.gamecalendar.user;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.piotrek.gamecalendar.AbstractIntegrationTest;
 import com.piotrek.gamecalendar.exceptions.ErrorResponse;
-import com.piotrek.gamecalendar.role.Role;
-import com.piotrek.gamecalendar.role.RoleName;
+import com.piotrek.gamecalendar.role.RoleRepository;
+import com.piotrek.gamecalendar.test_data.UserTestObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Resource;
-import java.util.Set;
 
 class UserControllerTest extends AbstractIntegrationTest {
 
     @Resource
     private UserRepository userRepository;
 
+    @Resource
+    private RoleRepository roleRepository;
+
     @BeforeEach
     void beforeEach() {
         userRepository.deleteAll();
+        roleRepository.deleteAll();
     }
 
     @Test
     @DisplayName("Should return current authenticated user")
     void shouldGetCurrentAuthenticatedUserWhenFoundUserThenReturnUser() throws JsonProcessingException {
         // given
-        var expectedResponse = userRepository.save(User.builder()
-                .id(144L)
-                .username("Piotrkacz22")
-                .roles(Set.of(Role.builder().name(RoleName.ROLE_USER).build()))
-                .email("piotr999@email.com")
-                .password("tajneHaselko999")
-                .emailVerified(true)
-                .imageUrl("obrazek.pl/342512")
+        var expectedResponse = userRepository.save(UserTestObject.builder()
+                .piotrek()
+                .withId(2)
+                .withRoleUser()
+                .withCorrectEmail()
+                .withEmailVerified()
+                .withCorrectPasswordPassword()
                 .build())
                 .toUserProfile();
 
@@ -63,22 +65,18 @@ class UserControllerTest extends AbstractIntegrationTest {
     @DisplayName("Should return user by username, when found, then return user")
     void shouldReturnUserByUsernameWhenFoundUserThenReturnUser() throws JsonProcessingException {
         // given
-        final String USERNAME = "Piotrkacz22";
-
-        var expectedResponse = userRepository.save(User.builder()
-                .id(144L)
-                .username(USERNAME)
-                .roles(Set.of(Role.builder().name(RoleName.ROLE_USER).build()))
-                .email("piotr999@email.com")
-                .password("tajneHaselko999")
-                .emailVerified(true)
-                .imageUrl("obrazek.pl/342512")
+        var expectedResponse = userRepository.save(UserTestObject.builder()
+                .piotrek()
+                .withRoleUser()
+                .withCorrectEmail()
+                .withEmailVerified()
+                .withCorrectPasswordPassword()
                 .build())
                 .toUserProfile();
 
         // when
         var exchange = webTestClient.get()
-                .uri("api/users/" + USERNAME)
+                .uri("api/users/" + UserTestObject.PIOTREK_USERNAME)
                 .exchange();
 
         // then
@@ -91,13 +89,12 @@ class UserControllerTest extends AbstractIntegrationTest {
     @DisplayName("Should return user by username, when not found, then return NotFoundException")
     void shouldReturnUserByUsernameWhenNotFoundUserThenReturnNotFoundException() throws JsonProcessingException {
         // given
-        final String USERNAME = "Piotrkacz22";
         final ErrorResponse expectedResult =
-                new ErrorResponse(404, "Not found user with username: " + USERNAME);
+                new ErrorResponse(404, "Not found user with username: " + UserTestObject.PIOTREK_USERNAME);
 
         // when
         var exchange = webTestClient.get()
-                .uri("api/users/" + USERNAME)
+                .uri("api/users/" + UserTestObject.PIOTREK_USERNAME)
                 .exchange();
 
         // then

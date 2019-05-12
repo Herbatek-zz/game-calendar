@@ -3,8 +3,9 @@ package com.piotrek.gamecalendar.game;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.piotrek.gamecalendar.AbstractIntegrationTest;
 import com.piotrek.gamecalendar.exceptions.ErrorResponse;
-import com.piotrek.gamecalendar.gameReleaseDate.GameReleaseDateRepository;
-import com.piotrek.gamecalendar.gamingPlatform.GamingPlatformRepository;
+import com.piotrek.gamecalendar.game_release_date.GameReleaseDateRepository;
+import com.piotrek.gamecalendar.gaming_platform.GamingPlatformRepository;
+import com.piotrek.gamecalendar.test_data.GameTestObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class GameControllerTest extends AbstractIntegrationTest {
     @DisplayName("Should return a game by given id, when the game exists")
     void shouldReturnGameByGivenIdWhenTheGameExists() throws JsonProcessingException {
         // given
-        var expectedGame = gameRepository.save(GameTestObject.builder().witcher().withId(1L).build());
+        var expectedGame = gameRepository.save(GameTestObject.builder().theWitcher().withId(1L).build());
 
         // when
         var exchange = webTestClient.get()
@@ -88,7 +89,7 @@ class GameControllerTest extends AbstractIntegrationTest {
     @DisplayName("Should return page with three games when three games are available")
     void shouldReturnPageWith3GamesWhen3GamesAreInDatabase() throws JsonProcessingException {
         // given
-        var witcher = gameRepository.save(GameTestObject.builder().witcher().build());
+        var witcher = gameRepository.save(GameTestObject.builder().theWitcher().build());
         var csgo = gameRepository.save(GameTestObject.builder().counterStrikeGlobalOffensive().build());
         var hearthstone = gameRepository.save(GameTestObject.builder().hearthstone().build());
 

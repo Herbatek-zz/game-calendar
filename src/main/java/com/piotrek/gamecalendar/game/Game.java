@@ -1,8 +1,8 @@
 package com.piotrek.gamecalendar.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.piotrek.gamecalendar.gameReleaseDate.GameReleaseDate;
-import com.piotrek.gamecalendar.gameSeries.GameSeries;
+import com.piotrek.gamecalendar.game_release_date.GameReleaseDate;
+import com.piotrek.gamecalendar.game_series.GameSeries;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.piotrek.gamecalendar.gameRate;
+package com.piotrek.gamecalendar.game_publisher;
 
 import lombok.Data;
 
@@ -9,11 +9,11 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class GameRate {
+public class GamePublisher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int rate;
+    private String name;
 }
