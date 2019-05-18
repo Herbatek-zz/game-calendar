@@ -5,6 +5,7 @@ import com.piotrek.gamecalendar.exceptions.NotFoundException;
 import com.piotrek.gamecalendar.role.Role;
 import com.piotrek.gamecalendar.role.RoleName;
 import com.piotrek.gamecalendar.role.RoleRepository;
+import com.piotrek.gamecalendar.security.oauth2.providers.AuthProvider;
 import com.piotrek.gamecalendar.security.payload.SignUpRequest;
 import com.piotrek.gamecalendar.user.dto.UserProfile;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,8 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found user with id: " + id));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not found user with id: " + id));
     }
 
     public UserProfile findByUsername(String username) {
@@ -47,6 +49,8 @@ public class UserService {
         return User.builder()
                 .username(signUpRequest.getUsername())
                 .email(signUpRequest.getEmail())
+                .emailVerified(false)
+                .authProvider(AuthProvider.local)
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .roles(Collections.singleton(userRole))
                 .build();

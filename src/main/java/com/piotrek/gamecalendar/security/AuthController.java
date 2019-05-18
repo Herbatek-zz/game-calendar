@@ -1,6 +1,6 @@
 package com.piotrek.gamecalendar.security;
 
-import com.piotrek.gamecalendar.security.payload.JwtAuthenticationResponse;
+import com.piotrek.gamecalendar.security.payload.JwtAuthResponse;
 import com.piotrek.gamecalendar.security.payload.LoginRequest;
 import com.piotrek.gamecalendar.security.payload.SignUpRequest;
 import com.piotrek.gamecalendar.user.User;
@@ -8,6 +8,7 @@ import com.piotrek.gamecalendar.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,11 +29,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-        var authentication = authService.authenticateUser(loginRequest);
-
+        Authentication authentication = authService.authenticateUser(loginRequest);
         String jwt = authService.getJwtToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        log.info("User {} has been successfully logged in", loginRequest.getUsernameOrEmail());
+        return ResponseEntity.ok(new JwtAuthResponse(jwt));
     }
 
     @PostMapping("/register")
@@ -41,8 +41,9 @@ public class AuthController {
         log.info("User {} has been successfully registered", registeredUser.getUsername());
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/api/users/{username}")
-                .buildAndExpand(registeredUser.getUsername()).toUri();
+                .fromCurrentContextPath().path("/api/users/me")
+                .buildAndExpand(registeredUser.getId())
+                .toUri();
 
         return ResponseEntity.created(location).body(registeredUser);
     }

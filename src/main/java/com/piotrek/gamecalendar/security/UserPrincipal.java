@@ -14,6 +14,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/*
+ * This class represents an authenticated Spring Security principal.
+ * It contains the details of the authenticated user.
+ */
+
 @Data
 @Builder
 @NoArgsConstructor

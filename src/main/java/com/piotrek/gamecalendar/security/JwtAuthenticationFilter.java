@@ -16,6 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/*
+ * This class is used to read JWT authentication token from the request,
+ *  verify it, and set Spring Security’s SecurityContext if the token is valid
+ */
+
 @Slf4j
 @Component
 @RequiredArgsConstructor

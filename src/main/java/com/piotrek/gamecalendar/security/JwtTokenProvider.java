@@ -24,7 +24,10 @@ public class JwtTokenProvider {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
-        var tokenExpireTime = LocalDateTime.now().plusSeconds(expiration).atZone(ZoneId.systemDefault());
+        var tokenExpireTime = LocalDateTime
+                .now()
+                .plusSeconds(expiration)
+                .atZone(ZoneId.systemDefault());
 
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
