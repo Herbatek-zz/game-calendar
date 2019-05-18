@@ -1,4 +1,4 @@
-package com.piotrek.gamecalendar.security.oauth2;
+package com.piotrek.gamecalendar.security.oauth2.providers;
 
 import java.util.Map;
 

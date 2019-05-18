@@ -11,9 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.piotrek.gamecalendar.util.ApplicationConstraints.*;
 
+/*
+ The following class provides functionality for storing the authorization request in cookies and retrieving it
+*/
+
 @Component
 public class HttpCookieOAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
-
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
@@ -22,11 +25,11 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
                 .orElse(null);
     }
 
+    //TODO: clean it
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
         if (authorizationRequest == null) {
-            CookieUtils.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
-            CookieUtils.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
+            removeAuthorizationRequestCookies(request, response);
             return;
         }
 

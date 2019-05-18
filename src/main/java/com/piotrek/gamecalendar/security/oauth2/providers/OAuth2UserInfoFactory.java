@@ -1,13 +1,13 @@
-package com.piotrek.gamecalendar.security.oauth2;
+package com.piotrek.gamecalendar.security.oauth2.providers;
 
 import com.piotrek.gamecalendar.exceptions.OAuth2AuthenticationProcessingException;
 
 import java.util.Map;
 
-class OAuth2UserInfoFactory {
+public class OAuth2UserInfoFactory {
 
     // TODO: change it to switch
-    static OAuth2UserInfo getOAuth2UserInfo(String registrationId, Map<String, Object> attributes) {
+    public static OAuth2UserInfo getOAuth2UserInfo(String registrationId, Map<String, Object> attributes) {
         if (registrationId.equalsIgnoreCase(AuthProvider.google.toString())) {
             return new GoogleOAuth2UserInfo(attributes);
         } else if (registrationId.equalsIgnoreCase(AuthProvider.facebook.toString())) {

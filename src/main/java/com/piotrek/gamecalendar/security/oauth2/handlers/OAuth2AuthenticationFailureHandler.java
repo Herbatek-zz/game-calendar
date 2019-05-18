@@ -1,5 +1,6 @@
-package com.piotrek.gamecalendar.security.oauth2;
+package com.piotrek.gamecalendar.security.oauth2.handlers;
 
+import com.piotrek.gamecalendar.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.piotrek.gamecalendar.util.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.AuthenticationException;

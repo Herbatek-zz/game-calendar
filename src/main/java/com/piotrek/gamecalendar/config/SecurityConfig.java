@@ -5,8 +5,8 @@ import com.piotrek.gamecalendar.security.JwtAuthenticationEntryPoint;
 import com.piotrek.gamecalendar.security.JwtAuthenticationFilter;
 import com.piotrek.gamecalendar.security.oauth2.CustomOAuth2UserService;
 import com.piotrek.gamecalendar.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.piotrek.gamecalendar.security.oauth2.OAuth2AuthenticationFailureHandler;
-import com.piotrek.gamecalendar.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.piotrek.gamecalendar.security.oauth2.handlers.OAuth2AuthenticationFailureHandler;
+import com.piotrek.gamecalendar.security.oauth2.handlers.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService userDetailsService;
-    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
@@ -102,7 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .baseUri("/api/oauth2/callback/*")
                     .and()
                 .userInfoEndpoint()
-                    .userService(customOAuth2UserService)
+                    .userService(oAuth2UserService)
                     .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler);

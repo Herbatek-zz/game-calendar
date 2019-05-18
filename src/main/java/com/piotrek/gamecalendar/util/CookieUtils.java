@@ -13,6 +13,7 @@ public class CookieUtils {
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
 
+        // TODO: clean it
         if (cookies != null && cookies.length > 0) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(name)) {
@@ -32,6 +33,7 @@ public class CookieUtils {
         response.addCookie(cookie);
     }
 
+    // TODO: change it to cleaner code
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {

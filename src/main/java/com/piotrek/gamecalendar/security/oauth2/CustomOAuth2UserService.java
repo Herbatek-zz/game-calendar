@@ -2,6 +2,9 @@ package com.piotrek.gamecalendar.security.oauth2;
 
 import com.piotrek.gamecalendar.exceptions.OAuth2AuthenticationProcessingException;
 import com.piotrek.gamecalendar.security.UserPrincipal;
+import com.piotrek.gamecalendar.security.oauth2.providers.AuthProvider;
+import com.piotrek.gamecalendar.security.oauth2.providers.OAuth2UserInfo;
+import com.piotrek.gamecalendar.security.oauth2.providers.OAuth2UserInfoFactory;
 import com.piotrek.gamecalendar.user.User;
 import com.piotrek.gamecalendar.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +27,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
-        OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
+        final OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
 
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
-        } catch (AuthenticationException ex) {
-            throw ex;
-        } catch (Exception ex) {
+        } catch (AuthenticationException e) {
+            // TODO: check if this is need
+            throw e;
+        } catch (Exception e) {
             // Throwing an instance of AuthenticationException will trigger the OAuth2AuthenticationFailureHandler
-            throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
+            throw new InternalAuthenticationServiceException(e.getMessage(), e.getCause());
         }
     }
 
@@ -42,6 +46,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
         }
 
+        //TODO: clean it
         Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
         User user;
         if (userOptional.isPresent()) {

@@ -21,4 +21,10 @@ public class GlobalControllerAdvice {
     public ErrorResponse notFoundHandle(NotFoundException exception) {
         return new ErrorResponse(NOT_FOUND.value(), exception.getMessage());
     }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ErrorResponse resourceNotFoundException(ResourceNotFoundException exception) {
+        return new ErrorResponse(NOT_FOUND.value(), exception.getMessage());
+    }
 }
