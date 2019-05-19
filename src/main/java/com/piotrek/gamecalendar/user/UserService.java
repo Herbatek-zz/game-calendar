@@ -43,7 +43,7 @@ public class UserService {
 
     private User createUser(SignUpRequest signUpRequest) {
 
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+        final Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new BadRequestException("Role not set"));
 
         return User.builder()

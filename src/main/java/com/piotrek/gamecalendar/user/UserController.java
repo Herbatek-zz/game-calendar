@@ -26,7 +26,6 @@ public class UserController {
         return userService.findById(userPrincipal.getId())
                 .toUserProfile();
     }
-    // TODO return users profile{username}
 
     @GetMapping("/{username}")
     public UserProfile findByUsername(@PathVariable String username) {

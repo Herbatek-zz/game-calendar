@@ -46,7 +46,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private String determineTargetUrl(HttpServletRequest request, Authentication authentication) {
         Optional<String> redirectUri = CookieUtils
-                .getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+                .getCookie(request.getCookies(), REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
 
         // TODO: connect somehow authorized uris

@@ -3,26 +3,17 @@ package com.piotrek.gamecalendar.util;
 import org.springframework.util.SerializationUtils;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Optional;
 
 public class CookieUtils {
 
-    public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
-        Cookie[] cookies = request.getCookies();
-
-        // TODO: clean it
-        if (cookies != null && cookies.length > 0) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(name)) {
-                    return Optional.of(cookie);
-                }
-            }
-        }
-
-        return Optional.empty();
+    public static Optional<Cookie> getCookie(Cookie[] cookies, String name) {
+        return Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals(name))
+                .findFirst();
     }
 
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
@@ -33,19 +24,15 @@ public class CookieUtils {
         response.addCookie(cookie);
     }
 
-    // TODO: change it to cleaner code
-    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length > 0) {
-            for (Cookie cookie: cookies) {
-                if (cookie.getName().equals(name)) {
+    public static void deleteCookie(HttpServletResponse response, Cookie[] cookies, String name) {
+        Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals(name))
+                .forEach(cookie -> {
                     cookie.setValue("");
                     cookie.setPath("/");
                     cookie.setMaxAge(0);
                     response.addCookie(cookie);
-                }
-            }
-        }
+                });
     }
 
     public static String serialize(Object object) {
@@ -54,7 +41,7 @@ public class CookieUtils {
     }
 
     public static <T> T deserialize(Cookie cookie, Class<T> cls) {
-        return cls.cast(SerializationUtils.deserialize(
-                Base64.getUrlDecoder().decode(cookie.getValue())));
+        byte[] decode = Base64.getUrlDecoder().decode(cookie.getValue());
+        return cls.cast(SerializationUtils.deserialize(decode));
     }
 }
