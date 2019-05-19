@@ -1,10 +1,12 @@
 package com.piotrek.gamecalendar.user.dto;
 
-import com.piotrek.gamecalendar.user.User;
+import com.piotrek.gamecalendar.achievement.Achievement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Data
 @Builder
@@ -15,14 +17,7 @@ public class UserProfile {
     private String username;
     private String email;
     private String imageUrl;
-
-    public User toUser() {
-        return User.builder()
-                .id(id)
-                .username(username)
-                .email(email)
-                .imageUrl(imageUrl).build();
-    }
+    private Set<Achievement> achievements;
 }
 
 

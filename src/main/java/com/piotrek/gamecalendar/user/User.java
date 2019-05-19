@@ -1,6 +1,7 @@
 package com.piotrek.gamecalendar.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.piotrek.gamecalendar.achievement.Achievement;
 import com.piotrek.gamecalendar.role.Role;
 import com.piotrek.gamecalendar.security.oauth2.providers.AuthProvider;
 import com.piotrek.gamecalendar.user.dto.UserProfile;
@@ -55,10 +56,17 @@ public class User extends DateAudit {
 
     @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
+    @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    @Builder.Default
+    @ManyToMany
+    @JoinTable(name = "user_achievement",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "achievement_id"))
+    private Set<Achievement> achievements = new HashSet<>();
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -71,6 +79,7 @@ public class User extends DateAudit {
                 .id(id)
                 .username(username)
                 .email(email)
-                .imageUrl(imageUrl).build();
+                .imageUrl(imageUrl)
+                .achievements(achievements).build();
     }
 }
