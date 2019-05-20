@@ -1,16 +1,13 @@
 package com.piotrek.gamecalendar.game;
 
-import com.piotrek.gamecalendar.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.time.LocalDate;
-import java.util.Set;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -18,17 +15,16 @@ import java.util.Set;
 @RequestMapping("/api/games")
 public class GameController {
 
-    private final GameRepository gameRepository;
+    private final GameService gameService;
 
     @GetMapping("/{id}")
-    public Game find(@PathVariable Long id) {
-        return gameRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Not found game with id " + id));
+    public Game findById(@PathVariable Long id) {
+        return gameService.findById(id);
     }
 
     @GetMapping
     public Page<Game> findPage(Pageable pageable) {
-        return gameRepository.findAll(pageable);
+        return gameService.findPageOfGames(pageable);
     }
 
 //     TODO logging

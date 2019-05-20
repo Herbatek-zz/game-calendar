@@ -2,6 +2,8 @@ package com.piotrek.gamecalendar.test_data;
 
 import com.piotrek.gamecalendar.role.Role;
 import com.piotrek.gamecalendar.role.RoleName;
+import com.piotrek.gamecalendar.role.RoleRepository;
+import com.piotrek.gamecalendar.security.oauth2.providers.AuthProvider;
 import com.piotrek.gamecalendar.user.User;
 import lombok.Getter;
 
@@ -38,8 +40,29 @@ public class UserTestObject {
         return this;
     }
 
+    public UserTestObject withFacebookLogged() {
+        user.setAuthProvider(AuthProvider.facebook);
+        return this;
+    }
+
+    public UserTestObject withLocalLogged() {
+        user.setAuthProvider(AuthProvider.local);
+        return this;
+    }
+
+    public UserTestObject withGoogleLogged() {
+        user.setAuthProvider(AuthProvider.google);
+        return this;
+    }
+
     public UserTestObject withRoleUser() {
         user.setRoles(Set.of(Role.builder().name(RoleName.ROLE_USER).build()));
+        return this;
+    }
+
+    public UserTestObject withRoleUser(RoleRepository roleRepository) {
+        Role userRole = Role.builder().name(RoleName.ROLE_USER).build();
+        user.setRoles(Set.of(roleRepository.save(userRole)));
         return this;
     }
 
@@ -47,6 +70,15 @@ public class UserTestObject {
         user.setRoles(Set.of(
                 Role.builder().name(RoleName.ROLE_USER).build(),
                 Role.builder().name(RoleName.ROLE_ADMIN).build()));
+        return this;
+    }
+
+    public UserTestObject withRoleUserAndAdmin(RoleRepository roleRepository) {
+        Role roleUser = Role.builder().name(RoleName.ROLE_USER).build();
+        Role roleAdmin = Role.builder().name(RoleName.ROLE_ADMIN).build();
+        user.setRoles(Set.of(
+                roleRepository.save(roleUser),
+                roleRepository.save(roleAdmin)));
         return this;
     }
 

@@ -20,9 +20,9 @@ public class GameReleaseDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @Transient
+    @ManyToOne
     private GamingPlatform gamingPlatform;
+
     private LocalDate releaseDate;
 
     public GameReleaseDate(GamingPlatform gamingPlatform, LocalDate releseDate) {

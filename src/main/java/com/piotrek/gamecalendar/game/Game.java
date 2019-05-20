@@ -3,10 +3,9 @@ package com.piotrek.gamecalendar.game;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piotrek.gamecalendar.game_release_date.GameReleaseDate;
 import com.piotrek.gamecalendar.game_series.GameSeries;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.piotrek.gamecalendar.user.User;
+import com.piotrek.gamecalendar.util.DateAudit;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -17,7 +16,8 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Game {
+@EqualsAndHashCode(callSuper = false)
+public class Game extends DateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,9 @@ public class Game {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.REMOVE})
     @JsonIgnore
     @Builder.Default
     private Set<GameReleaseDate> releaseDates = new HashSet<>();
@@ -33,4 +35,7 @@ public class Game {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonIgnore
     private GameSeries gameSeries;
+
+    @ManyToOne
+    private User addedBy;
 }

@@ -8,6 +8,9 @@ import com.piotrek.gamecalendar.test_data.UserTestObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import javax.annotation.Resource;
 
@@ -27,12 +30,14 @@ class UserControllerTest extends AbstractIntegrationTest {
 
     @Test
     @DisplayName("Should return current authenticated user")
+    @WithMockUser
     void shouldGetCurrentAuthenticatedUserWhenFoundUserThenReturnUser() throws JsonProcessingException {
         // given
         var expectedResponse = userRepository.save(UserTestObject.builder()
                 .piotrek()
+                .withGoogleLogged()
                 .withId(2)
-                .withRoleUser()
+                .withRoleUser(roleRepository)
                 .withCorrectEmail()
                 .withEmailVerified()
                 .withCorrectPasswordPassword()
@@ -67,7 +72,8 @@ class UserControllerTest extends AbstractIntegrationTest {
         // given
         var expectedResponse = userRepository.save(UserTestObject.builder()
                 .piotrek()
-                .withRoleUser()
+                .withLocalLogged()
+                .withRoleUser(roleRepository)
                 .withCorrectEmail()
                 .withEmailVerified()
                 .withCorrectPasswordPassword()

@@ -19,6 +19,9 @@ import java.util.List;
 class GameControllerTest extends AbstractIntegrationTest {
 
     @Resource
+    private GameService gameService;
+
+    @Resource
     private GameRepository gameRepository;
 
     @Resource
@@ -55,7 +58,7 @@ class GameControllerTest extends AbstractIntegrationTest {
     @DisplayName("Should throw not found exception when game with given id doesn't exist")
     void shouldThrowNotFoundExceptionWhenNotFoundGame() throws JsonProcessingException {
         // given
-        var expectedResponse = new ErrorResponse(404, "Not found game with id 3");
+        var expectedResponse = new ErrorResponse(404, "Not found game with id = 3");
 
         // when
         var exchange = webTestClient.get()
@@ -89,9 +92,9 @@ class GameControllerTest extends AbstractIntegrationTest {
     @DisplayName("Should return page with three games when three games are available")
     void shouldReturnPageWith3GamesWhen3GamesAreInDatabase() throws JsonProcessingException {
         // given
-        var witcher = gameRepository.save(GameTestObject.builder().theWitcher().build());
-        var csgo = gameRepository.save(GameTestObject.builder().counterStrikeGlobalOffensive().build());
-        var hearthstone = gameRepository.save(GameTestObject.builder().hearthstone().build());
+        Game witcher = gameRepository.save(GameTestObject.builder().theWitcher(gamingPlatformRepository, gameReleaseDateRepository).build());
+        Game csgo = gameRepository.save(GameTestObject.builder().counterStrikeGlobalOffensive(gamingPlatformRepository, gameReleaseDateRepository).build());
+        Game hearthstone = gameRepository.save(GameTestObject.builder().hearthstone(gamingPlatformRepository, gameReleaseDateRepository).build());
 
         var expectedResponse = new PageImpl<>(List.of(witcher, csgo, hearthstone), PageRequest.of(0, 20), 3);
 
