@@ -16,10 +16,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-class GameControllerTest extends AbstractIntegrationTest {
-
-    @Resource
-    private GameService gameService;
+class GameControllerIT extends AbstractIntegrationTest {
 
     @Resource
     private GameRepository gameRepository;

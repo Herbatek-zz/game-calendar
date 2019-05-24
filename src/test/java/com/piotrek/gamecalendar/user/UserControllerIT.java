@@ -14,7 +14,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import javax.annotation.Resource;
 
-class UserControllerTest extends AbstractIntegrationTest {
+class UserControllerIT extends AbstractIntegrationTest {
 
     @Resource
     private UserRepository userRepository;

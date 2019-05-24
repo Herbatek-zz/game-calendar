@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -21,18 +23,15 @@ public class GamingPlatformController {
         return gamingPlatformService.findPageOfGamingPlatforms(pageable);
     }
 
-    @GetMapping
-    public Page<GamingPlatform> searchByName(@PathParam("name") String name, Pageable pageable) {
-        return gamingPlatformService.findPageOfGamesByName(name, pageable);
-    }
-
     @GetMapping("/{id}")
     public GamingPlatform findById(@PathVariable Long id) {
         return gamingPlatformService.findById(id);
     }
 
     @PostMapping
-    public GamingPlatform create(@RequestBody GamingPlatform gamingPlatform) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('USER')")
+    public GamingPlatform create(@Valid @RequestBody GamingPlatform gamingPlatform) {
         return gamingPlatformService.save(gamingPlatform);
     }
 
