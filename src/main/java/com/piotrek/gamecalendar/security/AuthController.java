@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -39,6 +40,9 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         User registeredUser = userService.save(signUpRequest);
         log.info("User {} has been successfully registered", registeredUser.getUsername());
+
+        //TODO verification token send to email
+        String token = UUID.randomUUID().toString();
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/api/users/me")
