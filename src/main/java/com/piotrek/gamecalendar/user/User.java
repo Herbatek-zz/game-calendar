@@ -66,6 +66,7 @@ public class User extends DateAudit {
     @JoinTable(name = "user_achievement",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "achievement_id"))
+    @JsonIgnore
     private Set<Achievement> achievements = new HashSet<>();
 
     @NotNull
@@ -79,7 +80,6 @@ public class User extends DateAudit {
                 .id(id)
                 .username(username)
                 .email(email)
-                .imageUrl(imageUrl)
-                .achievements(achievements).build();
+                .imageUrl(imageUrl).build();
     }
 }
