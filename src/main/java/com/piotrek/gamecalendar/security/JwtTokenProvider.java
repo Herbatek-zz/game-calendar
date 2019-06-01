@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Slf4j
@@ -24,7 +25,7 @@ public class JwtTokenProvider {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
-        var tokenExpireTime = LocalDateTime
+        ZonedDateTime tokenExpireTime = LocalDateTime
                 .now()
                 .plusSeconds(expiration)
                 .atZone(ZoneId.systemDefault());

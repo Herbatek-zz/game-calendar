@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.Cookie;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.BDDAssertions.then;
 
 class CookieUtilsTest {
@@ -22,7 +24,7 @@ class CookieUtilsTest {
         };
 
         // when
-        var cookieResult = CookieUtils.getCookie(cookies, wantedCookie.getName());
+        Optional<Cookie> cookieResult = CookieUtils.getCookie(cookies, wantedCookie.getName());
 
         // then
         then(cookieResult)
@@ -43,7 +45,7 @@ class CookieUtilsTest {
         };
 
         // when
-        var cookieResult = CookieUtils.getCookie(cookies, wantedCookie.getName());
+        Optional<Cookie> cookieResult = CookieUtils.getCookie(cookies, wantedCookie.getName());
 
         // then
         then(cookieResult).isEmpty();

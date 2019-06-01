@@ -6,6 +6,7 @@ import com.piotrek.gamecalendar.test_data.GamingPlatformTestObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import javax.annotation.Resource;
 
@@ -33,10 +34,10 @@ class GamingPlatformControllerIT extends AbstractIntegrationTest {
     @DisplayName("Should find Gaming Platform by id, when found, then return")
     void shouldFindGamingPlatformById_whenFound_thenReturn() throws JsonProcessingException {
         // given
-        var expectedGame = gamingPlatformRepository.save(GamingPlatformTestObject.builder().pc().build());
+        GamingPlatform expectedGame = gamingPlatformRepository.save(GamingPlatformTestObject.builder().pc().build());
 
         // when
-        var exchange = webTestClient.get().uri(URL_PREFIX + "/" + expectedGame.getId())
+        WebTestClient.ResponseSpec exchange = webTestClient.get().uri(URL_PREFIX + "/" + expectedGame.getId())
                 .exchange();
 
         // then

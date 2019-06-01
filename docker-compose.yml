@@ -7,5 +7,5 @@ services:
     tty: true
     working_dir: $PWD
     volumes:
-      - "${CD}:$PWD"
+      - $PWD:$PWD
     command: ./gradlew clean build

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,11 +35,11 @@ class GamingPlatformServiceTest {
     void shouldFindPageOfGamingPlatforms_whenZeroGamingPlatforms_thenReturnEmptyPage() {
         // given
         Pageable pageable = PageRequest.of(1, 20);
-        var emptyPageable = new PageImpl<GamingPlatform>(Collections.emptyList(), pageable, 0);
+        PageImpl<GamingPlatform> emptyPageable = new PageImpl<>(Collections.emptyList(), pageable, 0);
         given(gamingPlatformRepository.findAll(pageable)).willReturn(emptyPageable);
 
         // when
-        var returnedPage = gamingPlatformService.findPageOfGamingPlatforms(pageable);
+        Page<GamingPlatform> returnedPage = gamingPlatformService.findPageOfGamingPlatforms(pageable);
 
         // then
         then(returnedPage).isEqualTo(emptyPageable).isEmpty();
@@ -51,7 +52,7 @@ class GamingPlatformServiceTest {
     void shouldFindPageOfGamingPlatforms_whenThreeGamingPlatforms_thenReturnPageWithThreeObjects() {
         // given
         Pageable pageable = PageRequest.of(1, 20);
-        var expectedPage = new PageImpl<>(Arrays.asList(
+        PageImpl<GamingPlatform> expectedPage = new PageImpl<>(Arrays.asList(
                 GamingPlatformTestObject.builder().pc().build(),
                 GamingPlatformTestObject.builder().xbox360().build(),
                 GamingPlatformTestObject.builder().ps4().build()
@@ -59,7 +60,7 @@ class GamingPlatformServiceTest {
         given(gamingPlatformRepository.findAll(pageable)).willReturn(expectedPage);
 
         // when
-        var returnedPage = gamingPlatformService.findPageOfGamingPlatforms(pageable);
+        Page<GamingPlatform> returnedPage = gamingPlatformService.findPageOfGamingPlatforms(pageable);
 
         // then
         then(returnedPage).isEqualTo(expectedPage).isNotEmpty();
@@ -87,7 +88,7 @@ class GamingPlatformServiceTest {
     void shouldFindById_whenFound_thenReturn() {
         // given
         final Long ID = 33L;
-        var expectedGamingPlatform = GamingPlatformTestObject.builder().pc().withId(ID).build();
+        GamingPlatform expectedGamingPlatform = GamingPlatformTestObject.builder().pc().withId(ID).build();
         given(gamingPlatformRepository.findById(ID)).willReturn(Optional.of(expectedGamingPlatform));
 
         // when
@@ -103,7 +104,7 @@ class GamingPlatformServiceTest {
     @DisplayName("Should save, then save")
     void shouldSave_thenSave() {
         // given
-        var expectedGamingPlatformBySaved = GamingPlatformTestObject.builder().pc().build();
+       GamingPlatform expectedGamingPlatformBySaved = GamingPlatformTestObject.builder().pc().build();
         given(gamingPlatformRepository.save(expectedGamingPlatformBySaved)).willReturn(expectedGamingPlatformBySaved);
 
         // when
@@ -135,7 +136,7 @@ class GamingPlatformServiceTest {
     @DisplayName("Should delete, when not found, then throw NotFoundException")
     void shouldDeleteById_whenFound_thenDeleteAndReturnDeletedObject() {
         // given
-        var gamingPlatformToDelete = GamingPlatformTestObject.builder().pc().withId(63L).build();
+        GamingPlatform gamingPlatformToDelete = GamingPlatformTestObject.builder().pc().withId(63L).build();
         given(gamingPlatformRepository.findById(gamingPlatformToDelete.getId())).willReturn(Optional.of(gamingPlatformToDelete));
 
         // when

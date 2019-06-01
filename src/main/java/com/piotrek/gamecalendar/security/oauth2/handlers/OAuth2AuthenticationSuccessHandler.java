@@ -1,6 +1,5 @@
 package com.piotrek.gamecalendar.security.oauth2.handlers;
 
-import com.piotrek.gamecalendar.exceptions.BadRequestException;
 import com.piotrek.gamecalendar.security.JwtTokenProvider;
 import com.piotrek.gamecalendar.security.oauth2.AuthProperties;
 import com.piotrek.gamecalendar.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;

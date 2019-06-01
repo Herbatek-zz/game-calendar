@@ -11,9 +11,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class GameControllerIT extends AbstractIntegrationTest {
@@ -38,10 +40,10 @@ class GameControllerIT extends AbstractIntegrationTest {
     @DisplayName("Should return a game by given id, when the game exists")
     void shouldReturnGameByGivenIdWhenTheGameExists() throws JsonProcessingException {
         // given
-        var expectedGame = gameRepository.save(GameTestObject.builder().theWitcher().withId(1L).build());
+        Game expectedGame = gameRepository.save(GameTestObject.builder().theWitcher().withId(1L).build());
 
         // when
-        var exchange = webTestClient.get()
+        WebTestClient.ResponseSpec exchange = webTestClient.get()
                 .uri("api/games/" + expectedGame.getId())
                 .exchange();
 
@@ -55,10 +57,10 @@ class GameControllerIT extends AbstractIntegrationTest {
     @DisplayName("Should throw not found exception when game with given id doesn't exist")
     void shouldThrowNotFoundExceptionWhenNotFoundGame() throws JsonProcessingException {
         // given
-        var expectedResponse = new ErrorResponse(404, "Not found game with id = 3");
+        ErrorResponse expectedResponse = new ErrorResponse(404, "Not found game with id = 3");
 
         // when
-        var exchange = webTestClient.get()
+        WebTestClient.ResponseSpec exchange = webTestClient.get()
                 .uri("api/games/3")
                 .exchange();
 
@@ -72,10 +74,10 @@ class GameControllerIT extends AbstractIntegrationTest {
     @DisplayName("Should return empty page when no games at all")
     void shouldReturnEmptyPageWhenNoGames() throws JsonProcessingException {
         // given
-        var expectedResponse = new PageImpl<Game>(new ArrayList<>(), PageRequest.of(0, 20), 0);
+        PageImpl<Game> expectedResponse = new PageImpl<>(new ArrayList<>(), PageRequest.of(0, 20), 0);
 
         // when
-        var exchange = webTestClient.get()
+        WebTestClient.ResponseSpec exchange = webTestClient.get()
                 .uri("api/games")
                 .exchange();
 
@@ -93,10 +95,10 @@ class GameControllerIT extends AbstractIntegrationTest {
         Game csgo = gameRepository.save(GameTestObject.builder().counterStrikeGlobalOffensive(gamingPlatformRepository, gameReleaseDateRepository).build());
         Game hearthstone = gameRepository.save(GameTestObject.builder().hearthstone(gamingPlatformRepository, gameReleaseDateRepository).build());
 
-        var expectedResponse = new PageImpl<>(List.of(witcher, csgo, hearthstone), PageRequest.of(0, 20), 3);
+        PageImpl<Game> expectedResponse = new PageImpl<>(Arrays.asList(witcher, csgo, hearthstone), PageRequest.of(0, 20), 3);
 
         // when
-        var exchange = webTestClient.get()
+        WebTestClient.ResponseSpec exchange = webTestClient.get()
                 .uri("api/games")
                 .exchange();
 

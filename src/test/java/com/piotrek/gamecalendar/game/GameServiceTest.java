@@ -68,7 +68,7 @@ class GameServiceTest {
     void shouldFindPageOfGames_whenNoGames_thenReturnEmptyPage() {
         // given
         Pageable pageable = PageRequest.of(1, 20);
-        var emptyPageable = new PageImpl<Game>(Collections.emptyList(), pageable, 0);
+        PageImpl<Game> emptyPageable = new PageImpl<>(Collections.emptyList(), pageable, 0);
         given(gameRepository.findAll(pageable)).willReturn(emptyPageable);
 
         // when
@@ -85,7 +85,7 @@ class GameServiceTest {
     void shouldFindPageOfGames_whenThreeGames_thenReturnPageWithThreeGames() {
         // given
         Pageable pageable = PageRequest.of(1, 20);
-        var expectedPage = new PageImpl<>(Arrays.asList(
+        PageImpl<Game> expectedPage = new PageImpl<>(Arrays.asList(
                 GameTestObject.builder().hearthstone().build(),
                 GameTestObject.builder().theWitcher().build(),
                 GameTestObject.builder().counterStrikeGlobalOffensive().build()

@@ -36,4 +36,7 @@ services:
       - POSTGRES_DB=sonarqube
     volumes:
       - H:\docker-data\postgresql\conf:/var/lib/postgresql
-      - H:\docker-data\postgresql\data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
+    external: true

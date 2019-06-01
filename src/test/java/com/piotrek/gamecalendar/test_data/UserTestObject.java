@@ -7,6 +7,9 @@ import com.piotrek.gamecalendar.security.oauth2.providers.AuthProvider;
 import com.piotrek.gamecalendar.user.User;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserTestObject {
@@ -56,29 +59,29 @@ public class UserTestObject {
     }
 
     public UserTestObject withRoleUser() {
-        user.setRoles(Set.of(Role.builder().name(RoleName.ROLE_USER).build()));
+        user.setRoles(new HashSet<>(Collections.singletonList(Role.builder().name(RoleName.ROLE_USER).build())));
         return this;
     }
 
     public UserTestObject withRoleUser(RoleRepository roleRepository) {
         Role userRole = Role.builder().name(RoleName.ROLE_USER).build();
-        user.setRoles(Set.of(roleRepository.save(userRole)));
+        user.setRoles(new HashSet<>(Collections.singletonList(roleRepository.save(userRole))));
         return this;
     }
 
     public UserTestObject withRoleUserAndAdmin() {
-        user.setRoles(Set.of(
+        user.setRoles(new HashSet<>(Arrays.asList(
                 Role.builder().name(RoleName.ROLE_USER).build(),
-                Role.builder().name(RoleName.ROLE_ADMIN).build()));
+                Role.builder().name(RoleName.ROLE_ADMIN).build())));
         return this;
     }
 
     public UserTestObject withRoleUserAndAdmin(RoleRepository roleRepository) {
         Role roleUser = Role.builder().name(RoleName.ROLE_USER).build();
         Role roleAdmin = Role.builder().name(RoleName.ROLE_ADMIN).build();
-        user.setRoles(Set.of(
+        user.setRoles(new HashSet<>(Arrays.asList(
                 roleRepository.save(roleUser),
-                roleRepository.save(roleAdmin)));
+                roleRepository.save(roleAdmin))));
         return this;
     }
 

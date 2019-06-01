@@ -18,8 +18,9 @@ public class AuthService {
     private final JwtTokenProvider tokenProvider;
 
     Authentication authenticateUser(LoginRequest request) {
-        var authenticationToken = new UsernamePasswordAuthenticationToken(request.getUsernameOrEmail(), request.getPassword());
-        var authentication = authenticationManager.authenticate(authenticationToken);
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(request.getUsernameOrEmail(), request.getPassword());
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return authentication;

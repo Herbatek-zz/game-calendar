@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     private Map<String, Object> attributes;
 
     static UserPrincipal create(User user) {
-        var authorities = user.getRoles().stream()
+        List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 

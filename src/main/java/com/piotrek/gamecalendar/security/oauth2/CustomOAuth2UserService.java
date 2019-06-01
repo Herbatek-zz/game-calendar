@@ -21,8 +21,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -81,7 +80,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .emailVerified(true)
                 .imageUrl(oAuth2UserInfo.getImageUrl())
                 .providerId(oAuth2UserInfo.getId())
-                .roles(Set.of(roleRepository.findByName(RoleName.ROLE_USER).get())) // TODO: .get ? RLY?
+                .roles(new HashSet<>(Collections.singletonList(roleRepository.findByName(RoleName.ROLE_USER).get()))) // TODO: .get ? RLY?
                 .authProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
                 .build();
         return userRepository.save(user);
