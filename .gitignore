@@ -28,9 +28,7 @@
 .gradletasknamecache
 build/
 bin/
-gradle/
 HELP.md
 .gradle
 /build/
-!gradle/wrapper/gradle-wrapper.jar
 src/main/resources/application.yml
