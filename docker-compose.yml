@@ -7,6 +7,5 @@ services:
     tty: true
     working_dir: $PWD
     volumes:
-      - $PWD:$PWD
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "${CD}:$PWD"
     command: ./gradlew clean build

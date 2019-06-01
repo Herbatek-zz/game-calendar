@@ -44,8 +44,8 @@ dependencies {
     testImplementation 'org.testcontainers:mariadb:1.11.3'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.5.0-M1'
     testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.mockito:mockito-junit-jupiter:2.27.5'
-    testImplementation 'org.mockito:mockito-core:2.27.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:2.28.2'
+    testImplementation 'org.mockito:mockito-core:2.28.2'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
