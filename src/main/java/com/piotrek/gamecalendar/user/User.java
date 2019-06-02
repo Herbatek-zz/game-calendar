@@ -70,8 +70,7 @@ public class User extends DateAudit {
     private Set<Achievement> achievements = new HashSet<>();
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private AuthProvider authProvider;
+    private String authProvider;
 
     private String providerId;
 

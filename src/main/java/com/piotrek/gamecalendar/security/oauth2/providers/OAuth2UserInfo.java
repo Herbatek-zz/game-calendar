@@ -1,17 +1,15 @@
 package com.piotrek.gamecalendar.security.oauth2.providers;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.Map;
 
+@AllArgsConstructor
 public abstract class OAuth2UserInfo {
+
+    @Getter
     protected Map<String, Object> attributes;
-
-    public OAuth2UserInfo(Map<String, Object> attributes) {
-        this.attributes = attributes;
-    }
-
-    public Map<String, Object> getAttributes() {
-        return attributes;
-    }
 
     public abstract String getId();
 

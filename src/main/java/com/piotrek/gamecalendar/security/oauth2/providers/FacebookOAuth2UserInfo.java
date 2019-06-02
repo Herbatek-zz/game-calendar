@@ -25,7 +25,6 @@ public class FacebookOAuth2UserInfo extends OAuth2UserInfo {
 
     @Override
     public String getImageUrl() {
-        // TODO: is this can be simplify ? maybe if( contains Picture && get(Picture).contains(Data) && get(Picture).get(Data).contains(url)
         if (attributes.containsKey("picture")) {
             Map<String, Object> pictureObj = (Map<String, Object>) attributes.get("picture");
             if (pictureObj.containsKey("data")) {

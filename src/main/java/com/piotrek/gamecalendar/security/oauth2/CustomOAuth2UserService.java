@@ -58,7 +58,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user;
         if (userOptional.isPresent()) {
             user = userOptional.get();
-            if (!user.getAuthProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+            if (!user.getAuthProvider().equalsIgnoreCase(oAuth2UserRequest.getClientRegistration().getRegistrationId())) {
                 log.warn("Used was signed up with another auth provider");
                 // TODO: add new provider to list instead throw exception
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
@@ -81,7 +81,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .imageUrl(oAuth2UserInfo.getImageUrl())
                 .providerId(oAuth2UserInfo.getId())
                 .roles(new HashSet<>(Collections.singletonList(roleRepository.findByName(RoleName.ROLE_USER).get()))) // TODO: .get ? RLY?
-                .authProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
+                .authProvider(oAuth2UserRequest.getClientRegistration().getRegistrationId())
                 .build();
         return userRepository.save(user);
     }
