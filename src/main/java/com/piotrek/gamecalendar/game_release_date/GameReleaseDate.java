@@ -20,13 +20,13 @@ public class GameReleaseDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     private GamingPlatform gamingPlatform;
 
     private LocalDate releaseDate;
 
-    public GameReleaseDate(GamingPlatform gamingPlatform, LocalDate releseDate) {
+    public GameReleaseDate(GamingPlatform gamingPlatform, LocalDate releaseDate) {
         this.gamingPlatform = gamingPlatform;
-        this.releaseDate = releseDate;
+        this.releaseDate = releaseDate;
     }
 }

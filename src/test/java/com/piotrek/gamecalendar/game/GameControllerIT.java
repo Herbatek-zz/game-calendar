@@ -16,7 +16,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 class GameControllerIT extends AbstractIntegrationTest {
 
@@ -91,9 +90,9 @@ class GameControllerIT extends AbstractIntegrationTest {
     @DisplayName("Should return page with three games when three games are available")
     void shouldReturnPageWith3GamesWhen3GamesAreInDatabase() throws JsonProcessingException {
         // given
-        Game witcher = gameRepository.save(GameTestObject.builder().theWitcher(gamingPlatformRepository, gameReleaseDateRepository).build());
-        Game csgo = gameRepository.save(GameTestObject.builder().counterStrikeGlobalOffensive(gamingPlatformRepository, gameReleaseDateRepository).build());
-        Game hearthstone = gameRepository.save(GameTestObject.builder().hearthstone(gamingPlatformRepository, gameReleaseDateRepository).build());
+        Game witcher = gameRepository.save(GameTestObject.builder().theWitcher().build());
+        Game csgo = gameRepository.save(GameTestObject.builder().counterStrikeGlobalOffensive().build());
+        Game hearthstone = gameRepository.save(GameTestObject.builder().hearthstone().build());
 
         PageImpl<Game> expectedResponse = new PageImpl<>(Arrays.asList(witcher, csgo, hearthstone), PageRequest.of(0, 20), 3);
 

@@ -6,6 +6,7 @@ import com.piotrek.gamecalendar.game_series.GameSeries;
 import com.piotrek.gamecalendar.user.User;
 import com.piotrek.gamecalendar.util.DateAudit;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,15 +26,13 @@ public class Game extends DateAudit {
 
     private String name;
 
-    @OneToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.REMOVE})
     @JsonIgnore
     @Builder.Default
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<GameReleaseDate> releaseDates = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private GameSeries gameSeries;
 
     @ManyToOne

@@ -1,5 +1,6 @@
 package com.piotrek.gamecalendar.util;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +23,11 @@ public abstract class DateAudit implements Serializable {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
+    @JsonIgnore
     private Instant createdAt;
 
     @LastModifiedDate
     @Column(nullable = false)
+    @JsonIgnore
     private Instant updatedAt;
 }
